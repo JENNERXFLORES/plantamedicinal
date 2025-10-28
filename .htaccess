@@ -1,0 +1,16 @@
+AddDefaultCharset UTF-8
+
+# Ensure UTF-8 for common static assets
+AddCharset UTF-8 .html .htm .js .css .json .php
+
+# Correct MIME types for JS/CSS
+AddType application/javascript .js
+AddType text/css .css
+
+# Optional: allow CORS for local dev (comment out if not needed)
+#<IfModule mod_headers.c>
+#  <FilesMatch "\.(js|css|json)$">
+#    Header set Access-Control-Allow-Origin "*"
+#  </FilesMatch>
+#</IfModule>
+

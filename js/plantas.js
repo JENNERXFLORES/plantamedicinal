@@ -28,6 +28,9 @@ const plantasState = {
 // Placeholder local (data URI) para imágenes faltantes
 const PLANT_PLACEHOLDER = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300"><rect width="100%" height="100%" fill="%23e5e7eb"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%236b7280" font-family="Arial" font-size="24">Planta</text></svg>`;
 
+// Placeholder seguro (pre-codificado) para atributos HTML
+const PLANT_PLACEHOLDER_SAFE = 'data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22><rect width=%22100%25%22 height=%22100%25%22 fill=%22%23e5e7eb%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%236b7280%22 font-family=%22Arial%22 font-size=%2224%22>Planta</text></svg>';
+
 // Gestor principal de plantas
 const plantasManager = {
     // Inicializar el módulo
@@ -71,7 +74,7 @@ const plantasManager = {
                         descripcion: p.descripcion || '',
                         beneficios: Array.isArray(p.beneficios) ? p.beneficios : (p.beneficios ? Object.values(p.beneficios) : []),
                         categoria: p.categoria || '',
-                        imagen: p.imagen || p.imagen_url || PLANT_PLACEHOLDER,
+                        imagen: p.imagen || p.imagen_url || PLANT_PLACEHOLDER_SAFE,
                         rating: p.rating || p.calificacion_promedio || 0,
                         referencias_cientificas: p.referencias_cientificas || p.total_recetas || 0,
                         region: p.origen || p.region || ''
@@ -320,8 +323,8 @@ const plantasManager = {
         return `
             <div class="plant-card cursor-pointer group" onclick="plantasManager.showPlantDetails(${planta.id})">
                 <div class="relative overflow-hidden rounded-xl mb-4">
-                    <img src="${planta.imagen || PLANT_PLACEHOLDER}" alt="${planta.nombre_comun}"
-                         onerror="this.onerror=null;this.src='${PLANT_PLACEHOLDER}'" 
+                    <img src="${planta.imagen || PLANT_PLACEHOLDER_SAFE}" alt="${planta.nombre_comun}"
+                         onerror='this.onerror=null;this.src="${PLANT_PLACEHOLDER_SAFE}"' 
                          class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300">
                     <div class="absolute top-3 right-3">
                         <button onclick="event.stopPropagation(); toggleFavorite(${planta.id})" 
@@ -376,8 +379,8 @@ const plantasManager = {
         return `
             <div class="plant-card cursor-pointer flex items-start space-x-6 p-6" onclick="plantasManager.showPlantDetails(${planta.id})">
                 <div class="flex-shrink-0 relative">
-                    <img src="${planta.imagen || PLANT_PLACEHOLDER}" alt="${planta.nombre_comun}"
-                         onerror=".src='${PLANT_PLACEHOLDER}'" 
+                    <img src="${planta.imagen || PLANT_PLACEHOLDER_SAFE}" alt="${planta.nombre_comun}"
+                         onerror='this.onerror=null;this.src="${PLANT_PLACEHOLDER_SAFE}"' 
                          class="w-24 h-24 rounded-lg object-cover">
                     <div class="absolute -top-2 -right-2">
                         <button onclick="event.stopPropagation(); toggleFavorite(${planta.id})" 
@@ -611,6 +614,7 @@ const plantasManager = {
                 <!-- Header con imagen -->
                 <div class="relative h-64 bg-gradient-to-r from-verde-medicina to-green-700 overflow-hidden">
                     <img src="${planta.imagen}" alt="${planta.nombre_comun}" 
+                         onerror='this.onerror=null;this.src="${PLANT_PLACEHOLDER_SAFE}"'
                          class="w-full h-full object-cover opacity-30">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                     <div class="absolute bottom-6 left-6 text-white">

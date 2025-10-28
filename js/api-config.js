@@ -51,13 +51,13 @@ const apiConfig = {
         
         // Comunidad
         comunidad: {
-            posts: '/comunidad.php/posts',
-            post: '/comunidad.php/posts',
-            comentarios: '/comunidad.php/comentarios',
-            comunidades: '/comunidad.php/comunidades',
-            categorias: '/comunidad.php/categorias',
-            votar: '/comunidad.php/votar',
-            notificaciones: '/comunidad.php/notificaciones'
+            posts: '/comunidad.php?endpoint=posts',
+            post: '/comunidad.php?endpoint=posts',
+            comentarios: '/comunidad.php?endpoint=comentarios',
+            comunidades: '/comunidad.php?endpoint=comunidades',
+            categorias: '/comunidad.php?endpoint=categorias',
+            votar: '/comunidad.php?endpoint=votar',
+            notificaciones: '/comunidad.php?endpoint=notificaciones'
         },
         
         // AdministraciÃ³n
@@ -350,4 +350,5 @@ window.apiClient = apiClient;
 window.APIError = APIError;
 window.legacyToAPIAdapter = legacyToAPIAdapter;
 window.responseUtils = responseUtils;
+
 

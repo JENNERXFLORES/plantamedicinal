@@ -79,6 +79,10 @@ class ComunidadAPI {
 
     private function handleGetRequest($pathParts) {
         $endpoint = end($pathParts);
+        // Compatibilidad: aceptar ?endpoint= o ?action= además de PATH_INFO
+        if (!$endpoint || $endpoint === 'comunidad.php' || $endpoint === 'api') {
+            $endpoint = $_GET['endpoint'] ?? ($_GET['action'] ?? $endpoint);
+        }
         
         switch ($endpoint) {
             case 'posts':

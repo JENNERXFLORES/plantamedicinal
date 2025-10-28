@@ -1,52 +1,52 @@
-// Sistema de búsqueda avanzada para PlantaMedicinal
-// Funcionalidades de búsqueda inteligente, filtros y sugerencias
+﻿// Sistema de bÃºsqueda avanzada para PlantaMedicinal
+// Funcionalidades de bÃºsqueda inteligente, filtros y sugerencias
 
-// Configuración del sistema de búsqueda
+// ConfiguraciÃ³n del sistema de bÃºsqueda
 const searchConfig = {
     minSearchLength: 2,
     maxResults: 20,
     debounceTime: 300,
     popularSearches: [
-        'manzanilla', 'dolor de cabeza', 'digestión', 'insomnio', 
-        'anti-inflamatorio', 'sábila', 'jengibre', 'lavanda'
+        'manzanilla', 'dolor de cabeza', 'digestiÃ³n', 'insomnio', 
+        'anti-inflamatorio', 'sÃ¡bila', 'jengibre', 'lavanda'
     ],
     categories: [
-        'Digestiva', 'Dermatológica', 'Inmunológica', 'Aromática', 
+        'Digestiva', 'DermatolÃ³gica', 'InmunolÃ³gica', 'AromÃ¡tica', 
         'Cardiovascular', 'Respiratoria', 'Nerviosa'
     ]
 };
 
-// Índice de búsqueda para optimización
+// Ãndice de bÃºsqueda para optimizaciÃ³n
 const searchIndex = {
     plantas: new Map(),
     sintomas: new Map(),
     categorias: new Map(),
     initialized: false,
 
-    // Inicializar índices de búsqueda
+    // Inicializar Ã­ndices de bÃºsqueda
     init: () => {
         if (searchIndex.initialized) return;
 
         dataManager.plantas.forEach(planta => {
-            // Indexar por nombre común
+            // Indexar por nombre comÃºn
             const nombreComun = planta.nombre_comun.toLowerCase();
             searchIndex.addToIndex(searchIndex.plantas, nombreComun, planta);
             
-            // Indexar por nombre científico
+            // Indexar por nombre cientÃ­fico
             const nombreCientifico = planta.nombre_cientifico.toLowerCase();
             searchIndex.addToIndex(searchIndex.plantas, nombreCientifico, planta);
             
-            // Indexar por beneficios/síntomas
+            // Indexar por beneficios/sÃ­ntomas
             planta.beneficios.forEach(beneficio => {
                 const beneficioLower = beneficio.toLowerCase();
                 searchIndex.addToIndex(searchIndex.sintomas, beneficioLower, planta);
             });
             
-            // Indexar por categoría
+            // Indexar por categorÃ­a
             const categoria = planta.categoria.toLowerCase();
             searchIndex.addToIndex(searchIndex.categorias, categoria, planta);
             
-            // Indexar palabras clave de descripción
+            // Indexar palabras clave de descripciÃ³n
             const descripcionWords = planta.descripcion.toLowerCase().split(' ');
             descripcionWords.forEach(word => {
                 if (word.length > 3) {
@@ -59,7 +59,7 @@ const searchIndex = {
         console.log('Indice de busqueda inicializado');
     },
 
-    // Agregar elemento al índice
+    // Agregar elemento al Ã­ndice
     addToIndex: (index, key, item) => {
         if (!index.has(key)) {
             index.set(key, []);
@@ -71,7 +71,7 @@ const searchIndex = {
         }
     },
 
-    // Buscar en índice
+    // Buscar en Ã­ndice
     searchInIndex: (index, term) => {
         const results = new Set();
         
@@ -85,9 +85,9 @@ const searchIndex = {
     }
 };
 
-// Motor de búsqueda inteligente
+// Motor de bÃºsqueda inteligente
 const searchEngine = {
-    // Búsqueda principal
+    // BÃºsqueda principal
     search: (query, filters = {}) => {
         if (!query || query.length < searchConfig.minSearchLength) {
             return [];
@@ -98,17 +98,17 @@ const searchEngine = {
         
         let results = new Set();
 
-        // Búsqueda exacta
+        // BÃºsqueda exacta
         const exactMatches = searchEngine.exactSearch(normalizedQuery);
         exactMatches.forEach(match => results.add(match));
 
-        // Búsqueda por tokens
+        // BÃºsqueda por tokens
         tokens.forEach(token => {
             const tokenResults = searchEngine.tokenSearch(token);
             tokenResults.forEach(result => results.add(result));
         });
 
-        // Búsqueda difusa (fuzzy)
+        // BÃºsqueda difusa (fuzzy)
         const fuzzyResults = searchEngine.fuzzySearch(normalizedQuery);
         fuzzyResults.forEach(result => results.add(result));
 
@@ -124,7 +124,7 @@ const searchEngine = {
         return finalResults.slice(0, searchConfig.maxResults);
     },
 
-    // Búsqueda exacta
+    // BÃºsqueda exacta
     exactSearch: (query) => {
         const results = [];
         
@@ -140,7 +140,7 @@ const searchEngine = {
         return results;
     },
 
-    // Búsqueda por tokens
+    // BÃºsqueda por tokens
     tokenSearch: (token) => {
         const results = [];
         
@@ -150,13 +150,13 @@ const searchEngine = {
             results.push({ ...planta, matchType: 'name', relevance: 80 });
         });
         
-        // Buscar en síntomas
+        // Buscar en sÃ­ntomas
         const sintomaResults = searchIndex.searchInIndex(searchIndex.sintomas, token);
         sintomaResults.forEach(planta => {
             results.push({ ...planta, matchType: 'symptom', relevance: 70 });
         });
         
-        // Buscar en categorías
+        // Buscar en categorÃ­as
         const categoriaResults = searchIndex.searchInIndex(searchIndex.categorias, token);
         categoriaResults.forEach(planta => {
             results.push({ ...planta, matchType: 'category', relevance: 60 });
@@ -165,7 +165,7 @@ const searchEngine = {
         return results;
     },
 
-    // Búsqueda difusa (aproximada)
+    // BÃºsqueda difusa (aproximada)
     fuzzySearch: (query) => {
         const results = [];
         const threshold = 0.6; // Umbral de similitud
@@ -293,7 +293,7 @@ const searchEngine = {
             // Bonus por rating
             relevance += (result.rating || 0) * 5;
             
-            // Bonus por múltiples coincidencias de tokens
+            // Bonus por mÃºltiples coincidencias de tokens
             const matchingTokens = tokens.filter(token => {
                 const nombreComun = result.nombre_comun.toLowerCase();
                 const nombreCientifico = result.nombre_cientifico.toLowerCase();
@@ -333,7 +333,7 @@ const suggestionSystem = {
             }
         });
         
-        // Sugerencias de síntomas/beneficios
+        // Sugerencias de sÃ­ntomas/beneficios
         const allBeneficios = new Set();
         dataManager.plantas.forEach(planta => {
             planta.beneficios.forEach(beneficio => {
@@ -389,7 +389,7 @@ const suggestionSystem = {
     }
 };
 
-// Sistema de historial de búsqueda
+// Sistema de historial de bÃºsqueda
 const searchHistory = {
     maxHistorySize: 10,
     
@@ -399,7 +399,7 @@ const searchHistory = {
         return history ? JSON.parse(history) : [];
     },
     
-    // Agregar búsqueda al historial
+    // Agregar bÃºsqueda al historial
     addToHistory: (query) => {
         if (!query || query.length < 2) return;
         
@@ -415,13 +415,13 @@ const searchHistory = {
             count: 1
         });
         
-        // Mantener tamaño máximo
+        // Mantener tamaÃ±o mÃ¡ximo
         history = history.slice(0, searchHistory.maxHistorySize);
         
         localStorage.setItem('plantamedicinal_search_history', JSON.stringify(history));
     },
     
-    // Obtener búsquedas recientes
+    // Obtener bÃºsquedas recientes
     getRecentSearches: () => {
         return searchHistory.getHistory().slice(0, 5);
     }
@@ -458,15 +458,15 @@ const advancedFilters = {
                 
                 <div class="grid md:grid-cols-2 gap-6">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Categoría</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">CategorÃ­a</label>
                         <select id="filterCategoria" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-                            <option value="">Todas las categorías</option>
+                            <option value="">Todas las categorÃ­as</option>
                             ${searchConfig.categories.map(cat => `<option value="${cat}">${cat}</option>`).join('')}
                         </select>
                     </div>
                     
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Rating mínimo</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Rating mÃ­nimo</label>
                         <select id="filterRating" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
                             <option value="">Cualquier rating</option>
                             <option value="4">4+ estrellas</option>
@@ -476,8 +476,8 @@ const advancedFilters = {
                     </div>
                     
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Región</label>
-                        <input type="text" id="filterRegion" placeholder="Ej: América del Sur" 
+                        <label class="block text-sm font-medium text-gray-700 mb-2">RegiÃ³n</label>
+                        <input type="text" id="filterRegion" placeholder="Ej: AmÃ©rica del Sur" 
                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">
                     </div>
                     
@@ -486,7 +486,7 @@ const advancedFilters = {
                         <select id="filterOrden" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
                             <option value="relevancia">Relevancia</option>
                             <option value="nombre">Nombre A-Z</option>
-                            <option value="rating">Rating más alto</option>
+                            <option value="rating">Rating mÃ¡s alto</option>
                             <option value="popularidad">Popularidad</option>
                         </select>
                     </div>
@@ -525,7 +525,7 @@ const advancedFilters = {
             orden: document.getElementById('filterOrden')?.value
         };
         
-        // Aplicar filtros a la búsqueda actual
+        // Aplicar filtros a la bÃºsqueda actual
         const searchInput = document.getElementById('searchInput');
         if (searchInput && searchInput.value) {
             const query = searchInput.value;
@@ -560,7 +560,7 @@ window.showAdvancedFilters = () => {
     advancedFilters.show();
 };
 
-// Extensión del sistema de búsqueda principal
+// ExtensiÃ³n del sistema de bÃºsqueda principal
 searchSystem.performSearch = () => {
     const searchInput = document.getElementById('searchInput');
     const resultsContainer = document.getElementById('searchResults');
@@ -578,7 +578,7 @@ searchSystem.performSearch = () => {
     // Agregar al historial
     searchHistory.addToHistory(query);
     
-    // Realizar búsqueda
+    // Realizar bÃºsqueda
     const results = searchEngine.search(query);
     searchSystem.displayResults(results);
     
@@ -586,12 +586,12 @@ searchSystem.performSearch = () => {
     suggestionSystem.hideSuggestions();
 };
 
-// Inicialización del sistema de búsqueda
+// InicializaciÃ³n del sistema de bÃºsqueda
 document.addEventListener('DOMContentLoaded', () => {
-    // Inicializar índice de búsqueda
+    // Inicializar Ã­ndice de bÃºsqueda
     searchIndex.init();
     
-    // Configurar eventos de búsqueda
+    // Configurar eventos de bÃºsqueda
     const searchInput = document.getElementById('searchInput');
     if (searchInput) {
         // Sugerencias en tiempo real
@@ -627,5 +627,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
-    console.log('🔍 Sistema de búsqueda avanzada inicializado');
+    console.log('ðŸ” Sistema de bÃºsqueda avanzada inicializado');
 });
+

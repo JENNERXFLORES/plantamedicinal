@@ -15,22 +15,23 @@
     
     <!-- Tailwind Config personalizado -->
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'verde-medicina': '#2d5a3d',
-                        'verde-claro': '#4ade80',
-                        'tierra': '#8b4513',
-                        'dorado': '#fbbf24',
-                    },
-                    fontFamily: {
-                        'inter': ['Inter', 'sans-serif'],
-                        'poppins': ['Poppins', 'sans-serif'],
-                    }
-                }
+      window.tailwind = window.tailwind || {};
+      window.tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "verde-medicina": "#2d5a3d",
+              "verde-claro": "#4ade80",
+              "tierra": "#8b4513",
+              "dorado": "#fbbf24"
+            },
+            fontFamily: {
+              "inter": ["Inter", "sans-serif"],
+              "poppins": ["Poppins", "sans-serif"]
             }
+          }
         }
+      };
     </script>
 </head>
 <body class="font-inter bg-gradient-to-br from-green-50 to-emerald-100 min-h-screen">
@@ -435,11 +436,11 @@
     </footer>
 
     <!-- Scripts JavaScript -->
-    <script src="js/api-config.js"></script>
-    <script src="js/auth-migrated.js"></script>
-    <script src="js/migration-adapter.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/search.js"></script>
-    <script src="js/recetas.js"></script>
-</body>
+    <script src="js/api-config.js" onload="console.log('Loaded js/api-config.js')" onerror="console.error('Error loading js/api-config.js', event)"></script>
+    <script src="js/auth-migrated.js" onload="console.log('Loaded js/auth-migrated.js')" onerror="console.error('Error loading js/auth-migrated.js', event)"></script>
+    <script src="js/migration-adapter.js" onload="console.log('Loaded js/migration-adapter.js')" onerror="console.error('Error loading js/migration-adapter.js', event)"></script>
+    <script src="js/main.js" onload="console.log('Loaded js/main.js')" onerror="console.error('Error loading js/main.js', event)"></script>
+    <script src="js/search.js" onload="console.log('Loaded js/search.js')" onerror="console.error('Error loading js/search.js', event)"></script>
+    <script src="js/recetas.js" onload="console.log('Loaded js/recetas.js')" onerror="console.error('Error loading js/recetas.js', event)"></script>
+  </body>
 </html>

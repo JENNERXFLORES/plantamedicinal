@@ -1,7 +1,7 @@
-// Sistema de autenticación migrado a MySQL para PlantaMedicinal
-// Manejo de login, registro y gestión de usuarios con APIs PHP
+﻿// Sistema de autenticaciÃ³n migrado a MySQL para PlantaMedicinal
+// Manejo de login, registro y gestiÃ³n de usuarios con APIs PHP
 
-// Configuración de autenticación (actualizada para API)
+// ConfiguraciÃ³n de autenticaciÃ³n (actualizada para API)
 const authConfig = {
     tokenKey: 'plantamedicinal_token',
     userKey: 'plantamedicinal_user',
@@ -13,7 +13,7 @@ const authConfig = {
     }
 };
 
-// Estado de autenticación
+// Estado de autenticaciÃ³n
 const authState = {
     isAuthenticated: false,
     currentUser: null,
@@ -21,7 +21,7 @@ const authState = {
     sessionExpiry: null
 };
 
-// Utilidades de autenticación actualizadas para API
+// Utilidades de autenticaciÃ³n actualizadas para API
 const authUtils = {
     // Validar email
     validateEmail: (email) => {
@@ -29,12 +29,12 @@ const authUtils = {
         return re.test(email);
     },
 
-    // Validar contraseña
+    // Validar contraseÃ±a
     validatePassword: (password) => {
         return password.length >= 6;
     },
 
-    // Almacenar datos de sesión
+    // Almacenar datos de sesiÃ³n
     setSession: (user, token) => {
         const expiry = Date.now() + authConfig.sessionTimeout;
         
@@ -53,7 +53,7 @@ const authUtils = {
         }
     },
 
-    // Limpiar sesión
+    // Limpiar sesiÃ³n
     clearSession: () => {
         localStorage.removeItem(authConfig.tokenKey);
         localStorage.removeItem(authConfig.userKey);
@@ -70,14 +70,14 @@ const authUtils = {
         }
     },
 
-    // Verificar si la sesión es válida
+    // Verificar si la sesiÃ³n es vÃ¡lida
     isSessionValid: () => {
         const expiry = localStorage.getItem('plantamedicinal_expiry');
         const token = localStorage.getItem(authConfig.tokenKey);
         return !!expiry && !!token && Date.now() < parseInt(expiry);
     },
 
-    // Restaurar sesión desde localStorage
+    // Restaurar sesiÃ³n desde localStorage
     restoreSession: async () => {
         if (authUtils.isSessionValid()) {
             const token = localStorage.getItem(authConfig.tokenKey);
@@ -125,7 +125,7 @@ const authUtils = {
     // Verificar si es proveedor o admin
     isProvider: () => authUtils.hasRole(authConfig.roles.PROVIDER) || authUtils.isAdmin(),
 
-    // Verificar permisos mínimos
+    // Verificar permisos mÃ­nimos
     hasMinRole: (requiredRole) => {
         const roleHierarchy = {
             'usuario': 1,
@@ -140,14 +140,14 @@ const authUtils = {
     }
 };
 
-// Gestor de autenticación migrado a API
+// Gestor de autenticaciÃ³n migrado a API
 const authManager = {
-    // Inicializar el sistema de autenticación
+    // Inicializar el sistema de autenticaciÃ³n
     init: async () => {
         console.log('Initializing Auth Manager (API Mode)...');
         
         try {
-            // Intentar restaurar sesión existente
+            // Intentar restaurar sesiÃ³n existente
             const restored = await authUtils.restoreSession();
             
             if (restored) {
@@ -157,7 +157,7 @@ const authManager = {
                 console.log('No valid session found');
             }
         } catch (error) {
-            console.error('❌ Error initializing auth:', error);
+            console.error('âŒ Error initializing auth:', error);
         }
     },
 
@@ -166,11 +166,11 @@ const authManager = {
         try {
             // Validar entrada
             if (!authUtils.validateEmail(email)) {
-                throw new Error('Email no válido');
+                throw new Error('Email no vÃ¡lido');
             }
 
             if (!authUtils.validatePassword(password)) {
-                throw new Error('La contraseña debe tener al menos 6 caracteres');
+                throw new Error('La contraseÃ±a debe tener al menos 6 caracteres');
             }
 
             // Mostrar loading
@@ -185,7 +185,7 @@ const authManager = {
 
             const { user, token } = response.data;
 
-            // Establecer sesión
+            // Establecer sesiÃ³n
             authUtils.setSession(user, token);
 
             // Actualizar UI
@@ -197,14 +197,14 @@ const authManager = {
             return {
                 success: true,
                 user: user,
-                message: 'Inicio de sesión exitoso'
+                message: 'Inicio de sesiÃ³n exitoso'
             };
 
         } catch (error) {
-            console.error('❌ Login error:', error);
+            console.error('âŒ Login error:', error);
             return {
                 success: false,
-                message: error.message || 'Error al iniciar sesión'
+                message: error.message || 'Error al iniciar sesiÃ³n'
             };
         } finally {
             authManager.showLoading(false);
@@ -222,11 +222,11 @@ const authManager = {
             }
 
             if (!authUtils.validateEmail(email)) {
-                throw new Error('Email no válido');
+                throw new Error('Email no vÃ¡lido');
             }
 
             if (!authUtils.validatePassword(password)) {
-                throw new Error('La contraseña debe tener al menos 6 caracteres');
+                throw new Error('La contraseÃ±a debe tener al menos 6 caracteres');
             }
 
             // Mostrar loading
@@ -246,12 +246,12 @@ const authManager = {
 
             return {
                 success: true,
-                message: 'Registro exitoso. Ya puedes iniciar sesión.',
+                message: 'Registro exitoso. Ya puedes iniciar sesiÃ³n.',
                 user: response.data.user
             };
 
         } catch (error) {
-            console.error('❌ Registration error:', error);
+            console.error('âŒ Registration error:', error);
             return {
                 success: false,
                 message: error.message || 'Error al registrarse'
@@ -271,14 +271,14 @@ const authManager = {
         } catch (error) {
             console.warn('Logout API call failed:', error.message);
         } finally {
-            // Limpiar sesión local siempre
+            // Limpiar sesiÃ³n local siempre
             authUtils.clearSession();
             authManager.updateUI();
             console.log('Logged out successfully');
         }
     },
 
-    // Verificar autenticación
+    // Verificar autenticaciÃ³n
     checkAuth: () => {
         return authState.isAuthenticated && authUtils.isSessionValid();
     },
@@ -300,12 +300,12 @@ const authManager = {
         }
     },
 
-    // Manejar errores de autenticación
+    // Manejar errores de autenticaciÃ³n
     handleAuthError: () => {
         authUtils.clearSession();
         authManager.updateUI();
         
-        // Redirigir a login si no estamos ya ahí
+        // Redirigir a login si no estamos ya ahÃ­
         if (!window.location.pathname.includes('index.html')) {
             const basePath = window.location.pathname.replace(/[^/]+$/, '');
             window.location.href = `${basePath}index.html?session_expired=1`;
@@ -317,7 +317,7 @@ const authManager = {
         const isAuthenticated = authManager.checkAuth();
         const user = authState.currentUser;
 
-        // Actualizar elementos de navegación
+        // Actualizar elementos de navegaciÃ³n
         const loginBtn = document.getElementById('loginBtn');
         const registerBtn = document.getElementById('registerBtn');
         const userMenu = document.getElementById('userMenu');
@@ -325,13 +325,13 @@ const authManager = {
         const logoutBtn = document.getElementById('logoutBtn');
 
         if (isAuthenticated && user) {
-            // Mostrar menú de usuario
+            // Mostrar menÃº de usuario
             if (loginBtn) loginBtn.style.display = 'none';
             if (registerBtn) registerBtn.style.display = 'none';
             if (userMenu) userMenu.style.display = 'block';
             if (userName) userName.textContent = `${user.nombre} ${user.apellido}`;
 
-            // Mostrar/ocultar opciones según rol
+            // Mostrar/ocultar opciones segÃºn rol
             authManager.updateRoleBasedUI(user.rol);
 
         } else {
@@ -341,7 +341,7 @@ const authManager = {
             if (userMenu) userMenu.style.display = 'none';
         }
 
-        // Configurar event listeners si no están configurados
+        // Configurar event listeners si no estÃ¡n configurados
         if (logoutBtn && !logoutBtn.hasAttribute('data-listener')) {
             logoutBtn.addEventListener('click', authManager.logout);
             logoutBtn.setAttribute('data-listener', 'true');
@@ -353,7 +353,7 @@ const authManager = {
         const adminElements = document.querySelectorAll('.admin-only');
         const providerElements = document.querySelectorAll('.provider-only');
 
-        // Mostrar/ocultar elementos según rol
+        // Mostrar/ocultar elementos segÃºn rol
         adminElements.forEach(el => {
             el.style.display = role === 'administrador' ? 'block' : 'none';
         });
@@ -362,7 +362,7 @@ const authManager = {
             el.style.display = ['proveedor', 'administrador'].includes(role) ? 'block' : 'none';
         });
 
-        // Actualizar links de navegación
+        // Actualizar links de navegaciÃ³n
         const adminLink = document.getElementById('adminLink');
         if (adminLink) {
             adminLink.style.display = role === 'administrador' ? 'block' : 'none';
@@ -387,7 +387,7 @@ const authManager = {
         });
     },
 
-    // Proteger rutas que requieren autenticación
+    // Proteger rutas que requieren autenticaciÃ³n
     requireAuth: (minRole = 'usuario') => {
         if (!authManager.checkAuth()) {
             {
@@ -398,7 +398,7 @@ const authManager = {
         }
 
         if (!authUtils.hasMinRole(minRole)) {
-            alert('No tienes permisos suficientes para acceder a esta página');
+            alert('No tienes permisos suficientes para acceder a esta pÃ¡gina');
             {
                 const basePath = window.location.pathname.replace(/[^/]+$/, '');
                 window.location.href = `${basePath}index.html`;
@@ -414,7 +414,7 @@ const authManager = {
         try {
             const response = await apiClient.get('/auth.php?action=profile');
             
-            // Actualizar usuario en la sesión
+            // Actualizar usuario en la sesiÃ³n
             authState.currentUser = response.data.user;
             localStorage.setItem(authConfig.userKey, JSON.stringify(response.data.user));
             
@@ -430,7 +430,7 @@ const authManager = {
         try {
             const response = await apiClient.put('/auth.php?action=profile', profileData);
             
-            // Actualizar usuario en la sesión
+            // Actualizar usuario en la sesiÃ³n
             authState.currentUser = response.data.user;
             localStorage.setItem(authConfig.userKey, JSON.stringify(response.data.user));
             
@@ -466,10 +466,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const result = await authManager.login(email, password, remember);
             
             if (result.success) {
-                // Redirigir según rol o página solicitada
+                // Redirigir segÃºn rol o pÃ¡gina solicitada
                 const urlParams = new URLSearchParams(window.location.search);
                 const redirect = urlParams.get('redirect') || 'index.html';
-                // Si redirect es relativo, mantén la carpeta actual
+                // Si redirect es relativo, mantÃ©n la carpeta actual
                 if (/^https?:\/\//i.test(redirect) || redirect.startsWith('/')) {
                     window.location.href = redirect;
                 } else {
@@ -532,7 +532,7 @@ document.addEventListener('DOMContentLoaded', () => {
     authManager.init();
 });
 
-// Renovar token periódicamente
+// Renovar token periÃ³dicamente
 setInterval(async () => {
     if (authManager.checkAuth()) {
         await authManager.refreshTokenIfNeeded();
@@ -546,5 +546,6 @@ window.authUtils = authUtils;
 window.authManager = authManager;
 
 console.log('Auth Manager (API Mode) loaded successfully');
+
 
 

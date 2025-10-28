@@ -1,7 +1,7 @@
-// PlantaMedicinal - Script principal
-// Sistema de gestión para la plataforma de plantas medicinales
+﻿// PlantaMedicinal - Script principal
+// Sistema de gestiÃ³n para la plataforma de plantas medicinales
 
-// Configuración global
+// ConfiguraciÃ³n global
 const config = {
     apiBaseUrl: '/api',
     version: '1.0.0',
@@ -12,7 +12,7 @@ const config = {
     }
 };
 
-// Estado global de la aplicación
+// Estado global de la aplicaciÃ³n
 const appState = {
     user: null,
     isLoggedIn: false,
@@ -24,7 +24,7 @@ const appState = {
 
 // Utilidades generales
 const utils = {
-    // Debounce para optimizar búsquedas
+    // Debounce para optimizar bÃºsquedas
     debounce: (func, wait) => {
         let timeout;
         return function executedFunction(...args) {
@@ -53,7 +53,7 @@ const utils = {
         return temp.innerHTML;
     },
 
-    // Generar ID único
+    // Generar ID Ãºnico
     generateId: () => {
         return '_' + Math.random().toString(36).substr(2, 9);
     },
@@ -101,7 +101,7 @@ const utils = {
         }, duration);
     },
 
-    // Scroll suave a sección
+    // Scroll suave a secciÃ³n
     scrollToSection: (sectionId) => {
         const element = document.getElementById(sectionId);
         if (element) {
@@ -113,13 +113,13 @@ const utils = {
     }
 };
 
-// Sistema de navegación
+// Sistema de navegaciÃ³n
 const navigation = {
     init: () => {
         // Actualizar navbar en scroll
         window.addEventListener('scroll', navigation.updateNavbar);
         
-        // Configurar navegación móvil
+        // Configurar navegaciÃ³n mÃ³vil
         navigation.setupMobileMenu();
         
         // Configurar smooth scroll para links internos
@@ -164,32 +164,32 @@ const navigation = {
 
 // Sistema de datos y API
 const dataManager = {
-    // Simulación de datos de plantas
+    // SimulaciÃ³n de datos de plantas
     plantas: [
         {
             id: 1,
             nombre_cientifico: "Matricaria chamomilla",
             nombre_comun: "Manzanilla",
             descripcion: "Planta medicinal ampliamente utilizada por sus propiedades calmantes y anti-inflamatorias.",
-            beneficios: ["Digestión", "Relajación", "Anti-inflamatorio", "Calmante"],
+            beneficios: ["DigestiÃ³n", "RelajaciÃ³n", "Anti-inflamatorio", "Calmante"],
             contraindicaciones: "Evitar en caso de alergia a plantas de la familia Asteraceae",
-            region: "Europa, América del Norte",
+            region: "Europa, AmÃ©rica del Norte",
             categoria: "Digestiva",
             imagen: "https://images.unsplash.com/photo-1544131750-2985d621da30?w=400",
             rating: 4.5,
-            usos_tradicionales: "Infusión para problemas digestivos y nerviosismo",
+            usos_tradicionales: "InfusiÃ³n para problemas digestivos y nerviosismo",
             referencias_cientificas: 3,
             popularidad: 95
         },
         {
             id: 2,
             nombre_cientifico: "Aloe vera",
-            nombre_comun: "Sábila",
+            nombre_comun: "SÃ¡bila",
             descripcion: "Planta suculenta conocida por sus propiedades curativas y regenerativas para la piel.",
             beneficios: ["Cicatrizante", "Hidratante", "Anti-inflamatorio", "Quemaduras"],
-            contraindicaciones: "No consumir internamente sin supervisión médica",
-            region: "África del Norte, Península Arábiga",
-            categoria: "Dermatológica",
+            contraindicaciones: "No consumir internamente sin supervisiÃ³n mÃ©dica",
+            region: "Ãfrica del Norte, PenÃ­nsula ArÃ¡biga",
+            categoria: "DermatolÃ³gica",
             imagen: "https://images.unsplash.com/photo-1596290147884-57e45c2b4c44?w=400",
             rating: 4.8,
             usos_tradicionales: "Gel aplicado directamente sobre heridas y quemaduras",
@@ -199,15 +199,15 @@ const dataManager = {
         {
             id: 3,
             nombre_cientifico: "Echinacea purpurea",
-            nombre_comun: "Equinácea",
-            descripcion: "Planta utilizada tradicionalmente para fortalecer el sistema inmunológico.",
-            beneficios: ["Inmunológico", "Antiviral", "Antibacteriano", "Resfriados"],
+            nombre_comun: "EquinÃ¡cea",
+            descripcion: "Planta utilizada tradicionalmente para fortalecer el sistema inmunolÃ³gico.",
+            beneficios: ["InmunolÃ³gico", "Antiviral", "Antibacteriano", "Resfriados"],
             contraindicaciones: "Evitar en enfermedades autoinmunes",
-            region: "América del Norte",
-            categoria: "Inmunológica",
+            region: "AmÃ©rica del Norte",
+            categoria: "InmunolÃ³gica",
             imagen: "https://images.unsplash.com/photo-1582794543139-8ac9cb0f7b11?w=400",
             rating: 4.3,
-            usos_tradicionales: "Infusión para prevenir resfriados y gripe",
+            usos_tradicionales: "InfusiÃ³n para prevenir resfriados y gripe",
             referencias_cientificas: 8,
             popularidad: 72
         },
@@ -215,14 +215,14 @@ const dataManager = {
             id: 4,
             nombre_cientifico: "Lavandula angustifolia",
             nombre_comun: "Lavanda",
-            descripcion: "Planta aromática con propiedades relajantes y antisépticas.",
-            beneficios: ["Relajante", "Aromático", "Antiséptico", "Insomnio"],
+            descripcion: "Planta aromÃ¡tica con propiedades relajantes y antisÃ©pticas.",
+            beneficios: ["Relajante", "AromÃ¡tico", "AntisÃ©ptico", "Insomnio"],
             contraindicaciones: "Puede causar somnolencia en dosis altas",
-            region: "Mediterráneo",
-            categoria: "Aromática",
+            region: "MediterrÃ¡neo",
+            categoria: "AromÃ¡tica",
             imagen: "https://images.unsplash.com/photo-1611909023032-2d4b3a2e78b1?w=400",
             rating: 4.6,
-            usos_tradicionales: "Aceite esencial para aromaterapia y relajación",
+            usos_tradicionales: "Aceite esencial para aromaterapia y relajaciÃ³n",
             referencias_cientificas: 12,
             popularidad: 85
         },
@@ -231,13 +231,13 @@ const dataManager = {
             nombre_cientifico: "Zingiber officinale",
             nombre_comun: "Jengibre",
             descripcion: "Rizoma con potentes propiedades anti-inflamatorias y digestivas.",
-            beneficios: ["Digestivo", "Anti-inflamatorio", "Náuseas", "Circulación"],
-            contraindicaciones: "Evitar en caso de úlceras gástricas",
+            beneficios: ["Digestivo", "Anti-inflamatorio", "NÃ¡useas", "CirculaciÃ³n"],
+            contraindicaciones: "Evitar en caso de Ãºlceras gÃ¡stricas",
             region: "Asia tropical",
             categoria: "Digestiva",
             imagen: "https://images.unsplash.com/photo-1599481238640-4c1288750d7a?w=400",
             rating: 4.7,
-            usos_tradicionales: "Infusión para náuseas y problemas digestivos",
+            usos_tradicionales: "InfusiÃ³n para nÃ¡useas y problemas digestivos",
             referencias_cientificas: 20,
             popularidad: 92
         }
@@ -287,11 +287,11 @@ const dataManager = {
     recetas: [
         {
             id: 1,
-            nombre: "Infusión calmante de manzanilla",
+            nombre: "InfusiÃ³n calmante de manzanilla",
             planta_id: 1,
             ingredientes: ["2 cucharadas de flores secas de manzanilla", "250ml de agua caliente", "Miel al gusto"],
             preparacion: "1. Hervir el agua\n2. Agregar las flores de manzanilla\n3. Dejar reposar 5-7 minutos\n4. Colar y endulzar con miel",
-            dosis: "1-2 tazas al día, preferentemente por la noche",
+            dosis: "1-2 tazas al dÃ­a, preferentemente por la noche",
             advertencias: "No exceder la dosis recomendada",
             autor: "Comunidad Wayuu",
             rating: 4.7,
@@ -300,13 +300,13 @@ const dataManager = {
         },
         {
             id: 2,
-            nombre: "Gel cicatrizante de sábila",
+            nombre: "Gel cicatrizante de sÃ¡bila",
             planta_id: 2,
-            ingredientes: ["1 hoja grande de sábila", "1 cucharada de miel", "Unas gotas de aceite de lavanda"],
-            preparacion: "1. Extraer el gel de la sábila\n2. Mezclar con miel\n3. Agregar aceite de lavanda\n4. Batir hasta homogeneizar",
-            dosis: "Aplicar sobre la zona afectada 2-3 veces al día",
-            advertencias: "Uso externo únicamente",
-            autor: "Dra. María González",
+            ingredientes: ["1 hoja grande de sÃ¡bila", "1 cucharada de miel", "Unas gotas de aceite de lavanda"],
+            preparacion: "1. Extraer el gel de la sÃ¡bila\n2. Mezclar con miel\n3. Agregar aceite de lavanda\n4. Batir hasta homogeneizar",
+            dosis: "Aplicar sobre la zona afectada 2-3 veces al dÃ­a",
+            advertencias: "Uso externo Ãºnicamente",
+            autor: "Dra. MarÃ­a GonzÃ¡lez",
             rating: 4.9,
             comentarios: 15,
             estado: "aprobada"
@@ -314,7 +314,7 @@ const dataManager = {
     ]
 };
 
-// Sistema de búsqueda avanzada
+// Sistema de bÃºsqueda avanzada
 const searchSystem = {
     init: () => {
         const searchInput = document.getElementById('searchInput');
@@ -379,8 +379,8 @@ const searchSystem = {
             resultsList.innerHTML = `
                 <div class="text-center py-8 text-gray-500">
                     <i class="fas fa-search text-4xl mb-4"></i>
-                    <p>No se encontraron plantas que coincidan con tu búsqueda.</p>
-                    <p class="text-sm mt-2">Intenta con otros términos o revisa la ortografía.</p>
+                    <p>No se encontraron plantas que coincidan con tu bÃºsqueda.</p>
+                    <p class="text-sm mt-2">Intenta con otros tÃ©rminos o revisa la ortografÃ­a.</p>
                 </div>
             `;
             return;
@@ -438,7 +438,7 @@ const favoritesSystem = {
     },
 
     updateUI: () => {
-        // Actualizar iconos de corazón en toda la interfaz
+        // Actualizar iconos de corazÃ³n en toda la interfaz
         document.querySelectorAll('[onclick*="toggleFavorite"]').forEach(button => {
             const plantaId = parseInt(button.getAttribute('onclick').match(/\d+/)[0]);
             const icon = button.querySelector('i');
@@ -554,13 +554,13 @@ window.viewPlantDetails = (plantaId) => {
     utils.showNotification(`Abriendo detalles de la planta ID: ${plantaId}`, 'info');
 };
 
-// Controles de modales de autenticación
+// Controles de modales de autenticaciÃ³n
 window.mostrarLogin = () => {
     const modal = document.getElementById('loginModal');
     const content = document.getElementById('loginContent');
     if (!modal || !content) return;
     modal.classList.remove('hidden');
-    // animación de entrada
+    // animaciÃ³n de entrada
     requestAnimationFrame(() => {
         content.classList.remove('scale-95', 'opacity-0');
         content.classList.add('scale-100', 'opacity-100');
@@ -571,7 +571,7 @@ window.cerrarLogin = () => {
     const modal = document.getElementById('loginModal');
     const content = document.getElementById('loginContent');
     if (!modal || !content) return;
-    // animación de salida
+    // animaciÃ³n de salida
     content.classList.add('scale-95', 'opacity-0');
     content.classList.remove('scale-100', 'opacity-100');
     setTimeout(() => modal.classList.add('hidden'), 300);
@@ -597,9 +597,9 @@ window.cerrarRegistro = () => {
     setTimeout(() => modal.classList.add('hidden'), 300);
 };
 
-// Inicialización de la aplicación
+// InicializaciÃ³n de la aplicaciÃ³n
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('🌱 PlantaMedicinal iniciado correctamente');
+    console.log('ðŸŒ± PlantaMedicinal iniciado correctamente');
     
     // Inicializar sistemas
     navigation.init();
@@ -609,11 +609,12 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Configurar eventos globales
     window.addEventListener('resize', () => {
-        // Manejar cambios de tamaño de ventana
+        // Manejar cambios de tamaÃ±o de ventana
     });
     
     // Cargar datos iniciales si es necesario
     // TODO: Cargar desde API real
     
-    console.log('✅ Todos los sistemas inicializados');
+    console.log('âœ… Todos los sistemas inicializados');
 });
+

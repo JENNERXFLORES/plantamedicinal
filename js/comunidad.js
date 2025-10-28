@@ -301,11 +301,12 @@ const comunidadManager = {
             comunidadState.miembros = [];
             comunidadState.eventos = [];
         } catch (e) {
-            console.warn('Fallo carga inicial de comunidad, usando datos locales:', e.message);
-            comunidadState.comunidades = [...comunidadDatabase.comunidades];
-            comunidadState.miembros = [...comunidadDatabase.miembros];
-            comunidadState.temasForo = [...comunidadDatabase.temasForo];
-            comunidadState.eventos = [...comunidadDatabase.eventos];
+            console.warn('Fallo carga inicial de comunidad desde API:', e.message);
+            // Sin fallback local para detectar claramente problemas de API
+            comunidadState.comunidades = [];
+            comunidadState.miembros = [];
+            comunidadState.temasForo = [];
+            comunidadState.eventos = [];
         }
     },
 
