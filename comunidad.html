@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comunidad - PlantaMedicinal</title>
+    
+    <!-- CSS Framework y Fuentes -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Tailwind Config personalizado -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'verde-medicina': '#2d5a3d',
+                        'verde-claro': '#4ade80',
+                        'tierra': '#8b4513',
+                        'dorado': '#fbbf24',
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                        'poppins': ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-inter bg-gradient-to-br from-green-50 to-emerald-100 min-h-screen">
+    
+    <!-- Header con navegación -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50" id="mainNav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo y título -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-verde-medicina to-green-600 rounded-full flex items-center justify-center">
+                        <i class="fas fa-leaf text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <a href="index.html" class="font-poppins font-bold text-xl text-verde-medicina hover:text-green-700">PlantaMedicinal</a>
+                        <p class="text-xs text-gray-600 hidden sm:block">Conservación del Conocimiento Ancestral</p>
+                    </div>
+                </div>
+
+                <!-- Navegación desktop -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="nav-link text-gray-700 hover:text-verde-medicina transition-colors duration-200 font-medium">Inicio</a>
+                    <a href="plantas.html" class="nav-link text-gray-700 hover:text-verde-medicina transition-colors duration-200 font-medium">Plantas</a>
+                    <a href="recetas.html" class="nav-link text-gray-700 hover:text-verde-medicina transition-colors duration-200 font-medium">Recetas</a>
+                    <a href="comunidad.html" class="nav-link text-verde-medicina border-b-2 border-verde-medicina font-medium">Comunidad</a>
+                </div>
+
+                <!-- Botones de autenticación (se actualizan dinámicamente) -->
+                <div class="hidden md:flex items-center space-x-4" id="authButtons">
+                    <button onclick="mostrarLogin()" class="px-4 py-2 text-verde-medicina border border-verde-medicina rounded-lg hover:bg-verde-medicina hover:text-white transition-all duration-200 font-medium">
+                        <i class="fas fa-sign-in-alt mr-2"></i>Iniciar Sesión
+                    </button>
+                    <button onclick="mostrarRegistro()" class="px-4 py-2 bg-verde-medicina text-white rounded-lg hover:bg-green-700 transition-all duration-200 font-medium">
+                        <i class="fas fa-user-plus mr-2"></i>Registrarse
+                    </button>
+                </div>
+
+                <!-- Menú móvil -->
+                <div class="md:hidden">
+                    <button onclick="toggleMobileMenu()" class="text-gray-700 hover:text-verde-medicina">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Menú móvil desplegable -->
+            <div id="mobileMenu" class="md:hidden hidden bg-white border-t">
+                <div class="px-2 pt-2 pb-3 space-y-1">
+                    <a href="index.html" class="block px-3 py-2 text-gray-700 hover:text-verde-medicina">Inicio</a>
+                    <a href="plantas.html" class="block px-3 py-2 text-gray-700 hover:text-verde-medicina">Plantas</a>
+                    <a href="recetas.html" class="block px-3 py-2 text-gray-700 hover:text-verde-medicina">Recetas</a>
+                    <a href="comunidad.html" class="block px-3 py-2 text-verde-medicina font-medium">Comunidad</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section de comunidad -->
+    <section class="relative bg-gradient-to-r from-green-600 to-emerald-600 text-white py-16">
+        <div class="absolute inset-0 opacity-20">
+            <div class="floating-leaf absolute top-10 left-10 w-8 h-8">🌿</div>
+            <div class="floating-leaf absolute top-20 right-20 w-6 h-6" style="animation-delay: -1s;">🍃</div>
+            <div class="floating-leaf absolute bottom-10 left-1/4 w-10 h-10" style="animation-delay: -2s;">🌱</div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-5xl font-poppins font-bold mb-4">
+                    Conecta con la <span class="text-dorado">Comunidad</span>
+                </h1>
+                <p class="text-xl mb-8 opacity-90 max-w-3xl mx-auto">
+                    Únete a sabios tradicionales, investigadores y entusiastas que comparten 
+                    la pasión por preservar el conocimiento ancestral de las plantas medicinales.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Estadísticas de la comunidad -->
+    <section class="py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="space-y-2">
+                    <div class="text-3xl font-bold text-verde-medicina">25</div>
+                    <div class="text-sm text-gray-600">Comunidades Colaboradoras</div>
+                </div>
+                <div class="space-y-2">
+                    <div class="text-3xl font-bold text-verde-medicina">1,200+</div>
+                    <div class="text-sm text-gray-600">Miembros Activos</div>
+                </div>
+                <div class="space-y-2">
+                    <div class="text-3xl font-bold text-verde-medicina">300+</div>
+                    <div class="text-sm text-gray-600">Recetas Compartidas</div>
+                </div>
+                <div class="space-y-2">
+                    <div class="text-3xl font-bold text-verde-medicina">15</div>
+                    <div class="text-sm text-gray-600">Países Representados</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contenido principal -->
+    <main class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Tabs de navegación -->
+            <div class="bg-white rounded-xl shadow-sm mb-8">
+                <div class="flex flex-wrap border-b border-gray-200">
+                    <button onclick="showCommunityTab('comunidades')" 
+                            class="community-tab active px-6 py-4 text-sm font-medium border-b-2 border-verde-medicina text-verde-medicina">
+                        <i class="fas fa-users mr-2"></i>Comunidades Indígenas
+                    </button>
+                    <button onclick="showCommunityTab('miembros')" 
+                            class="community-tab px-6 py-4 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent">
+                        <i class="fas fa-user-friends mr-2"></i>Miembros Destacados
+                    </button>
+                    <button onclick="showCommunityTab('foro')" 
+                            class="community-tab px-6 py-4 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent">
+                        <i class="fas fa-comments mr-2"></i>Foro de Discusión
+                    </button>
+                    <button onclick="showCommunityTab('eventos')" 
+                            class="community-tab px-6 py-4 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent">
+                        <i class="fas fa-calendar mr-2"></i>Eventos y Talleres
+                    </button>
+                </div>
+            </div>
+
+            <!-- Sección Comunidades Indígenas -->
+            <section id="comunidades-tab" class="community-section">
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">Comunidades Indígenas Colaboradoras</h2>
+                    <p class="text-gray-600 mb-6">
+                        Conoce a las comunidades que generosamente comparten su sabiduría ancestral 
+                        y establecen conexiones directas para el intercambio cultural.
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="comunidadesContainer">
+                    <!-- Las comunidades se cargarán dinámicamente -->
+                </div>
+            </section>
+
+            <!-- Sección Miembros Destacados -->
+            <section id="miembros-tab" class="community-section hidden">
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">Miembros Destacados</h2>
+                    <p class="text-gray-600 mb-6">
+                        Investigadores, herbolarios y entusiastas que contribuyen activamente 
+                        al crecimiento de nuestra comunidad.
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6" id="miembrosContainer">
+                    <!-- Los miembros se cargarán dinámicamente -->
+                </div>
+            </section>
+
+            <!-- Sección Foro de Discusión -->
+            <section id="foro-tab" class="community-section hidden">
+                <div class="mb-8 flex justify-between items-center">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-900 mb-2">Foro de Discusión</h2>
+                        <p class="text-gray-600">Participa en conversaciones sobre plantas medicinales y conocimiento tradicional</p>
+                    </div>
+                    <button onclick="mostrarNuevoTema()" 
+                            class="px-6 py-3 bg-verde-medicina text-white rounded-lg hover:bg-green-700 transition-colors">
+                        <i class="fas fa-plus mr-2"></i>Nuevo Tema
+                    </button>
+                </div>
+
+                <!-- Filtros del foro -->
+                <div class="bg-white rounded-lg p-4 mb-6 border border-gray-200">
+                    <div class="flex flex-wrap gap-4 items-center">
+                        <select id="foroCategoria" class="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
+                            <option value="">Todas las categorías</option>
+                            <option value="consultas">Consultas Generales</option>
+                            <option value="recetas">Discusión de Recetas</option>
+                            <option value="investigacion">Investigación Científica</option>
+                            <option value="intercambio">Intercambio Cultural</option>
+                        </select>
+                        <div class="flex-1"></div>
+                        <span class="text-sm text-gray-600">47 temas activos</span>
+                    </div>
+                </div>
+
+                <div class="space-y-4" id="foroContainer">
+                    <!-- Los temas del foro se cargarán dinámicamente -->
+                </div>
+            </section>
+
+            <!-- Sección Eventos y Talleres -->
+            <section id="eventos-tab" class="community-section hidden">
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">Eventos y Talleres</h2>
+                    <p class="text-gray-600 mb-6">
+                        Participa en talleres, conferencias y encuentros virtuales con expertos 
+                        en medicina tradicional y plantas medicinales.
+                    </p>
+                </div>
+
+                <!-- Próximos eventos -->
+                <div class="mb-8">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Próximos Eventos</h3>
+                    <div class="grid md:grid-cols-2 gap-6" id="eventosContainer">
+                        <!-- Los eventos se cargarán dinámicamente -->
+                    </div>
+                </div>
+
+                <!-- Eventos pasados -->
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Grabaciones de Eventos Pasados</h3>
+                    <div class="grid md:grid-cols-3 gap-6" id="eventosPasadosContainer">
+                        <!-- Los eventos pasados se cargarán dinámicamente -->
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Modal de perfil de comunidad -->
+    <div id="comunidadDetailModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
+            <div id="comunidadDetailContent">
+                <!-- El contenido se cargará dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de nuevo tema del foro -->
+    <div id="nuevoTemaModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full p-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-900">Crear Nuevo Tema</h2>
+                <button onclick="cerrarNuevoTema()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+
+            <form id="nuevoTemaForm" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Título del tema*</label>
+                    <input type="text" id="temaTitulo" required 
+                           placeholder="Escribe un título descriptivo para tu tema"
+                           class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Categoría*</label>
+                    <select id="temaCategoria" required class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
+                        <option value="">Seleccionar categoría...</option>
+                        <option value="consultas">Consultas Generales</option>
+                        <option value="recetas">Discusión de Recetas</option>
+                        <option value="investigacion">Investigación Científica</option>
+                        <option value="intercambio">Intercambio Cultural</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Descripción del tema*</label>
+                    <textarea id="temaDescripcion" required rows="6" 
+                              placeholder="Describe tu consulta, experiencia o tema de discusión"
+                              class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina resize-none"></textarea>
+                </div>
+
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <div class="flex items-start">
+                        <i class="fas fa-info-circle text-blue-500 mr-2 mt-1"></i>
+                        <div class="text-sm text-gray-700">
+                            <p class="font-medium mb-1">Normas de la comunidad</p>
+                            <p>Mantén un tono respetuoso, comparte información verificada y respeta el conocimiento tradicional de las comunidades.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-end space-x-4">
+                    <button type="button" onclick="cerrarNuevoTema()" 
+                            class="px-6 py-3 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                        Cancelar
+                    </button>
+                    <button type="submit" 
+                            class="px-6 py-3 bg-verde-medicina text-white rounded-lg hover:bg-green-700 transition-colors">
+                        <i class="fas fa-paper-plane mr-2"></i>Publicar Tema
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modales de autenticación (reutilizados) -->
+    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-8 transform transition-all duration-300 scale-95 opacity-0" id="loginContent">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-900">Iniciar Sesión</h2>
+                <p class="text-gray-600 mt-2">Accede a tu cuenta de PlantaMedicinal</p>
+            </div>
+
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Correo Electrónico</label>
+                    <input type="email" id="loginEmail" required 
+                           class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Contraseña</label>
+                    <input type="password" id="loginPassword" required 
+                           class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
+                </div>
+                <button type="submit" class="w-full py-3 bg-verde-medicina text-white rounded-lg hover:bg-green-700 transition-colors font-semibold">
+                    Iniciar Sesión
+                </button>
+            </form>
+
+            <button onclick="cerrarLogin()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+    </div>
+
+    <div id="registerModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-8 transform transition-all duration-300 scale-95 opacity-0" id="registerContent">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-900">Crear Cuenta</h2>
+                <p class="text-gray-600 mt-2">Únete a la comunidad de PlantaMedicinal</p>
+            </div>
+
+            <form id="registerForm" class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <input type="text" id="registerName" required placeholder="Nombre"
+                               class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
+                    </div>
+                    <div>
+                        <input type="text" id="registerLastName" required placeholder="Apellido"
+                               class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
+                    </div>
+                </div>
+                <input type="email" id="registerEmail" required placeholder="Correo electrónico"
+                       class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
+                <select id="registerRole" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
+                    <option value="usuario">Usuario General</option>
+                    <option value="proveedor">Proveedor/Comunidad Indígena</option>
+                </select>
+                <input type="password" id="registerPassword" required placeholder="Contraseña"
+                       class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
+                <input type="password" id="registerConfirmPassword" required placeholder="Confirmar contraseña"
+                       class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
+                <button type="submit" class="w-full py-3 bg-verde-medicina text-white rounded-lg hover:bg-green-700 transition-colors font-semibold">
+                    Crear Cuenta
+                </button>
+            </form>
+
+            <button onclick="cerrarRegistro()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-verde-medicina text-white py-12 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 bg-dorado rounded-full flex items-center justify-center">
+                            <i class="fas fa-leaf text-verde-medicina text-lg"></i>
+                        </div>
+                        <h3 class="font-poppins font-bold text-xl">PlantaMedicinal</h3>
+                    </div>
+                    <p class="text-gray-300 mb-4">Conectando comunidades y preservando sabiduría ancestral.</p>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-lg mb-4">Comunidad</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="#" class="hover:text-dorado transition-colors">Foro de Discusión</a></li>
+                        <li><a href="#" class="hover:text-dorado transition-colors">Eventos y Talleres</a></li>
+                        <li><a href="#" class="hover:text-dorado transition-colors">Comunidades Indígenas</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-lg mb-4">Recursos</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="plantas.html" class="hover:text-dorado transition-colors">Plantas Medicinales</a></li>
+                        <li><a href="recetas.html" class="hover:text-dorado transition-colors">Recetas Tradicionales</a></li>
+                        <li><a href="#" class="hover:text-dorado transition-colors">Investigaciones</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-lg mb-4">Contacto</h4>
+                    <div class="space-y-2 text-gray-300">
+                        <p><i class="fas fa-envelope mr-2"></i>comunidad@plantamedicinal.org</p>
+                        <p><i class="fas fa-phone mr-2"></i>+57 1 234 5678</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-green-600 mt-8 pt-8 text-center text-gray-300">
+                <p>&copy; 2024 PlantaMedicinal. Preservando el conocimiento ancestral con respeto y colaboración.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts JavaScript -->
+    <script src="js/api-config.js"></script>
+    <script src="js/auth-migrated.js"></script>
+    <script src="js/migration-adapter.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/comunidad.js"></script>
+</body>
+</html>

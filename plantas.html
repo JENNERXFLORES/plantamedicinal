@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plantas Medicinales - PlantaMedicinal</title>
+    
+    <!-- CSS Framework y Fuentes -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Chart.js para estadísticas -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Tailwind Config personalizado -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'verde-medicina': '#2d5a3d',
+                        'verde-claro': '#4ade80',
+                        'tierra': '#8b4513',
+                        'dorado': '#fbbf24',
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                        'poppins': ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-inter bg-gradient-to-br from-green-50 to-emerald-100 min-h-screen">
+    
+    <!-- Header con navegación -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50" id="mainNav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo y título -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-verde-medicina to-green-600 rounded-full flex items-center justify-center">
+                        <i class="fas fa-leaf text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <a href="index.html" class="font-poppins font-bold text-xl text-verde-medicina hover:text-green-700">PlantaMedicinal</a>
+                        <p class="text-xs text-gray-600 hidden sm:block">Conservación del Conocimiento Ancestral</p>
+                    </div>
+                </div>
+
+                <!-- Navegación desktop -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="nav-link text-gray-700 hover:text-verde-medicina transition-colors duration-200 font-medium">Inicio</a>
+                    <a href="plantas.html" class="nav-link text-verde-medicina border-b-2 border-verde-medicina font-medium">Plantas</a>
+                    <a href="recetas.html" class="nav-link text-gray-700 hover:text-verde-medicina transition-colors duration-200 font-medium">Recetas</a>
+                    <a href="comunidad.html" class="nav-link text-gray-700 hover:text-verde-medicina transition-colors duration-200 font-medium">Comunidad</a>
+                    <a href="#" onclick="showAdvancedFilters()" class="nav-link text-gray-700 hover:text-verde-medicina transition-colors duration-200 font-medium">Búsqueda</a>
+                </div>
+
+                <!-- Botones de autenticación (se actualizan dinámicamente) -->
+                <div class="hidden md:flex items-center space-x-4" id="authButtons">
+                    <button onclick="mostrarLogin()" class="px-4 py-2 text-verde-medicina border border-verde-medicina rounded-lg hover:bg-verde-medicina hover:text-white transition-all duration-200 font-medium">
+                        <i class="fas fa-sign-in-alt mr-2"></i>Iniciar Sesión
+                    </button>
+                    <button onclick="mostrarRegistro()" class="px-4 py-2 bg-verde-medicina text-white rounded-lg hover:bg-green-700 transition-all duration-200 font-medium">
+                        <i class="fas fa-user-plus mr-2"></i>Registrarse
+                    </button>
+                </div>
+
+                <!-- Menú móvil -->
+                <div class="md:hidden">
+                    <button onclick="toggleMobileMenu()" class="text-gray-700 hover:text-verde-medicina">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Menú móvil desplegable -->
+            <div id="mobileMenu" class="md:hidden hidden bg-white border-t">
+                <div class="px-2 pt-2 pb-3 space-y-1">
+                    <a href="index.html" class="block px-3 py-2 text-gray-700 hover:text-verde-medicina">Inicio</a>
+                    <a href="plantas.html" class="block px-3 py-2 text-verde-medicina font-medium">Plantas</a>
+                    <a href="recetas.html" class="block px-3 py-2 text-gray-700 hover:text-verde-medicina">Recetas</a>
+                    <a href="comunidad.html" class="block px-3 py-2 text-gray-700 hover:text-verde-medicina">Comunidad</a>
+                    <a href="#" onclick="showAdvancedFilters()" class="block px-3 py-2 text-gray-700 hover:text-verde-medicina">Búsqueda</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section específico para plantas -->
+    <section class="relative bg-gradient-to-r from-verde-medicina to-green-700 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-5xl font-poppins font-bold mb-4">
+                    Catálogo de <span class="text-dorado">Plantas Medicinales</span>
+                </h1>
+                <p class="text-xl mb-8 opacity-90 max-w-3xl mx-auto">
+                    Explora nuestra base de conocimiento con plantas medicinales nativas, 
+                    sus propiedades, usos tradicionales y evidencia científica.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Barra de búsqueda y filtros -->
+    <section class="py-8 bg-white shadow-sm sticky top-16 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row gap-4 items-center">
+                <!-- Buscador principal -->
+                <div class="flex-1 relative">
+                    <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    <input type="text" id="plantSearchInput" 
+                           placeholder="Buscar plantas por nombre, beneficio o síntoma..."
+                           class="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-verde-medicina focus:border-transparent">
+                </div>
+                
+                <!-- Filtros rápidos -->
+                <div class="flex flex-wrap gap-2">
+                    <select id="categoryFilter" class="px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-verde-medicina">
+                        <option value="">Todas las categorías</option>
+                        <option value="Digestiva">Digestiva</option>
+                        <option value="Dermatológica">Dermatológica</option>
+                        <option value="Inmunológica">Inmunológica</option>
+                        <option value="Aromática">Aromática</option>
+                        <option value="Respiratoria">Respiratoria</option>
+                        <option value="Cardiovascular">Cardiovascular</option>
+                        <option value="Nerviosa">Nerviosa</option>
+                    </select>
+                    
+                    <button onclick="showAdvancedFilters()" 
+                            class="px-4 py-3 border border-verde-medicina text-verde-medicina rounded-xl hover:bg-verde-medicina hover:text-white transition-colors">
+                        <i class="fas fa-filter mr-2"></i>Filtros Avanzados
+                    </button>
+                    
+                    <button onclick="clearAllFilters()" 
+                            class="px-4 py-3 bg-gray-100 text-gray-600 rounded-xl hover:bg-gray-200 transition-colors">
+                        <i class="fas fa-times mr-2"></i>Limpiar
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Estadísticas de búsqueda -->
+            <div class="mt-4 flex justify-between items-center text-sm text-gray-600">
+                <span id="searchStats">Mostrando todas las plantas disponibles</span>
+                <div class="flex items-center space-x-4">
+                    <label class="flex items-center">
+                        <span class="mr-2">Ordenar por:</span>
+                        <select id="sortBy" class="border border-gray-200 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-verde-medicina">
+                            <option value="nombre">Nombre A-Z</option>
+                            <option value="rating">Rating más alto</option>
+                            <option value="popularidad">Popularidad</option>
+                            <option value="referencias">Referencias científicas</option>
+                        </select>
+                    </label>
+                    <div class="flex items-center space-x-1">
+                        <button id="gridView" onclick="setViewMode('grid')" class="p-2 text-verde-medicina border border-verde-medicina rounded hover:bg-verde-medicina hover:text-white">
+                            <i class="fas fa-th"></i>
+                        </button>
+                        <button id="listView" onclick="setViewMode('list')" class="p-2 text-gray-400 border border-gray-300 rounded hover:bg-gray-100">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contenido principal de plantas -->
+    <main class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Grid/Lista de plantas -->
+            <div id="plantasContainer" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Las plantas se cargarán dinámicamente aquí -->
+            </div>
+            
+            <!-- Loading spinner -->
+            <div id="loadingSpinner" class="hidden text-center py-12">
+                <div class="loading-spinner mx-auto mb-4"></div>
+                <p class="text-gray-600">Cargando plantas...</p>
+            </div>
+            
+            <!-- Mensaje de no resultados -->
+            <div id="noResults" class="hidden text-center py-12">
+                <i class="fas fa-search text-6xl text-gray-300 mb-4"></i>
+                <h3 class="text-xl font-semibold text-gray-600 mb-2">No se encontraron plantas</h3>
+                <p class="text-gray-500">Intenta ajustar los filtros de búsqueda o usa términos diferentes.</p>
+            </div>
+            
+            <!-- Paginación -->
+            <div id="pagination" class="mt-12 flex justify-center">
+                <nav class="flex space-x-2">
+                    <!-- Los botones de paginación se generarán dinámicamente -->
+                </nav>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal de detalles de planta -->
+    <div id="plantDetailModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-4xl w-full max-h-screen overflow-y-auto">
+            <div id="plantDetailContent">
+                <!-- El contenido se cargará dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de login (reutilizado) -->
+    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-8 transform transition-all duration-300 scale-95 opacity-0" id="loginContent">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-900">Iniciar Sesión</h2>
+                <p class="text-gray-600 mt-2">Accede a tu cuenta de PlantaMedicinal</p>
+            </div>
+
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Correo Electrónico</label>
+                    <input type="email" id="loginEmail" required 
+                           class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Contraseña</label>
+                    <input type="password" id="loginPassword" required 
+                           class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
+                </div>
+                <div class="flex items-center justify-between">
+                    <label class="flex items-center">
+                        <input type="checkbox" class="mr-2">
+                        <span class="text-sm text-gray-600">Recordarme</span>
+                    </label>
+                    <a href="#" class="text-sm text-verde-medicina hover:underline">¿Olvidaste tu contraseña?</a>
+                </div>
+                <button type="submit" class="w-full py-3 bg-verde-medicina text-white rounded-lg hover:bg-green-700 transition-colors font-semibold">
+                    Iniciar Sesión
+                </button>
+            </form>
+
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600">
+                    ¿No tienes cuenta? 
+                    <button onclick="mostrarRegistro(); cerrarLogin();" class="text-verde-medicina hover:underline font-medium">Regístrate aquí</button>
+                </p>
+            </div>
+
+            <button onclick="cerrarLogin()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal de registro (reutilizado) -->
+    <div id="registerModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-8 transform transition-all duration-300 scale-95 opacity-0" id="registerContent">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-900">Crear Cuenta</h2>
+                <p class="text-gray-600 mt-2">Únete a la comunidad de PlantaMedicinal</p>
+            </div>
+
+            <form id="registerForm" class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Nombre</label>
+                        <input type="text" id="registerName" required 
+                               class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Apellido</label>
+                        <input type="text" id="registerLastName" required 
+                               class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Correo Electrónico</label>
+                    <input type="email" id="registerEmail" required 
+                           class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Usuario</label>
+                    <select id="registerRole" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
+                        <option value="usuario">Usuario General</option>
+                        <option value="proveedor">Proveedor/Comunidad Indígena</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Contraseña</label>
+                    <input type="password" id="registerPassword" required 
+                           class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Confirmar Contraseña</label>
+                    <input type="password" id="registerConfirmPassword" required 
+                           class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
+                </div>
+                <div class="flex items-start">
+                    <input type="checkbox" id="registerTerms" required class="mt-1 mr-2">
+                    <label for="registerTerms" class="text-sm text-gray-600">
+                        Acepto los <a href="#" class="text-verde-medicina hover:underline">términos y condiciones</a> 
+                        y la <a href="#" class="text-verde-medicina hover:underline">política de privacidad</a>
+                    </label>
+                </div>
+                <button type="submit" class="w-full py-3 bg-verde-medicina text-white rounded-lg hover:bg-green-700 transition-colors font-semibold">
+                    Crear Cuenta
+                </button>
+            </form>
+
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600">
+                    ¿Ya tienes cuenta? 
+                    <button onclick="mostrarLogin(); cerrarRegistro();" class="text-verde-medicina hover:underline font-medium">Inicia sesión aquí</button>
+                </p>
+            </div>
+
+            <button onclick="cerrarRegistro()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-verde-medicina text-white py-12 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 bg-dorado rounded-full flex items-center justify-center">
+                            <i class="fas fa-leaf text-verde-medicina text-lg"></i>
+                        </div>
+                        <h3 class="font-poppins font-bold text-xl">PlantaMedicinal</h3>
+                    </div>
+                    <p class="text-gray-300 mb-4">Preservando el conocimiento ancestral sobre plantas medicinales para las futuras generaciones.</p>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-lg mb-4">Enlaces Útiles</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="plantas.html" class="hover:text-dorado transition-colors">Plantas Medicinales</a></li>
+                        <li><a href="recetas.html" class="hover:text-dorado transition-colors">Recetas Tradicionales</a></li>
+                        <li><a href="comunidad.html" class="hover:text-dorado transition-colors">Comunidades</a></li>
+                        <li><a href="#" class="hover:text-dorado transition-colors">Investigación Científica</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-lg mb-4">Soporte</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="#" class="hover:text-dorado transition-colors">Centro de Ayuda</a></li>
+                        <li><a href="#" class="hover:text-dorado transition-colors">Términos de Servicio</a></li>
+                        <li><a href="#" class="hover:text-dorado transition-colors">Política de Privacidad</a></li>
+                        <li><a href="#" class="hover:text-dorado transition-colors">Contacto</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-lg mb-4">Contacto</h4>
+                    <div class="space-y-2 text-gray-300">
+                        <p><i class="fas fa-envelope mr-2"></i>info@plantamedicinal.org</p>
+                        <p><i class="fas fa-phone mr-2"></i>+57 1 234 5678</p>
+                        <p><i class="fas fa-map-marker-alt mr-2"></i>Bogotá, Colombia</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-green-600 mt-8 pt-8 text-center text-gray-300">
+                <p>&copy; 2024 PlantaMedicinal. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts JavaScript -->
+    <!-- APIs primero -->
+    <script src="js/api-config.js"></script>
+    <script src="js/auth-migrated.js"></script>
+    <script src="js/migration-adapter.js"></script>
+
+    <!-- Scripts existentes después -->
+    <script src="js/main.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/plantas.js"></script>
+</body>
+</html>

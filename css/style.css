@@ -1,0 +1,567 @@
+/* Estilos personalizados para PlantaMedicinal */
+
+/* Variables CSS */
+:root {
+    --verde-medicina: #2d5a3d;
+    --verde-claro: #4ade80;
+    --tierra: #8b4513;
+    --dorado: #fbbf24;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Fuentes y base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    overflow-x: hidden;
+}
+
+/* Animaciones personalizadas */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes floating {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    33% {
+        transform: translateY(-10px) rotate(5deg);
+    }
+    66% {
+        transform: translateY(5px) rotate(-5deg);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes slideInFromLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInFromRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Clases de animación */
+.animate-fadeInUp {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.floating-leaf {
+    animation: floating 4s ease-in-out infinite;
+    font-size: 2rem;
+}
+
+.pulse-animation {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* Efectos de hover para navegación */
+.nav-link {
+    position: relative;
+    transition: var(--transition);
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--verde-medicina);
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* Cards con efectos 3D */
+.feature-card {
+    position: relative;
+    transition: var(--transition);
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.2));
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg, transparent, rgba(255,255,255,0.1));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.feature-card:hover::before {
+    opacity: 1;
+}
+
+.feature-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+/* Efectos de glass morphism para modales */
+.glass-effect {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+/* Botones con efectos avanzados */
+.btn-primary {
+    background: linear-gradient(135deg, var(--verde-medicina), #22c55e);
+    border: none;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn-primary:hover::before {
+    left: 100%;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(45, 90, 61, 0.3);
+}
+
+/* Input fields con efectos */
+.input-field {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.input-field input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 16px;
+    transition: var(--transition);
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.input-field input:focus {
+    outline: none;
+    border-color: var(--verde-medicina);
+    box-shadow: 0 0 0 3px rgba(45, 90, 61, 0.1);
+    transform: translateY(-2px);
+}
+
+.input-field label {
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    transform: translateY(-50%);
+    color: #6b7280;
+    pointer-events: none;
+    transition: var(--transition);
+    background: white;
+    padding: 0 8px;
+}
+
+.input-field input:focus + label,
+.input-field input:not(:placeholder-shown) + label {
+    top: 0;
+    font-size: 12px;
+    color: var(--verde-medicina);
+}
+
+/* Efectos de loading */
+.loading-spinner {
+    border: 3px solid #f3f4f6;
+    border-top: 3px solid var(--verde-medicina);
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Cards de plantas con efectos */
+.plant-card {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: var(--transition);
+    border: 1px solid rgba(229, 231, 235, 0.5);
+    position: relative;
+    overflow: hidden;
+}
+
+.plant-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(45, 90, 61, 0.05) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.plant-card:hover::before {
+    opacity: 1;
+}
+
+.plant-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    border-color: var(--verde-medicina);
+}
+
+/* Sistema de rating con estrellas */
+.rating-stars {
+    display: flex;
+    gap: 2px;
+}
+
+.rating-star {
+    color: #d1d5db;
+    transition: color 0.2s ease;
+    cursor: pointer;
+}
+
+.rating-star.active {
+    color: var(--dorado);
+}
+
+.rating-star:hover,
+.rating-star:hover ~ .rating-star {
+    color: var(--dorado);
+}
+
+/* Badges y etiquetas */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge-success {
+    background: rgba(34, 197, 94, 0.1);
+    color: #15803d;
+}
+
+.badge-warning {
+    background: rgba(251, 191, 36, 0.1);
+    color: #92400e;
+}
+
+.badge-info {
+    background: rgba(59, 130, 246, 0.1);
+    color: #1d4ed8;
+}
+
+/* Efectos para el scrolling suave */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Navbar sticky effect */
+.nav-sticky {
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Tooltips */
+.tooltip {
+    position: relative;
+    cursor: help;
+}
+
+.tooltip::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 1000;
+}
+
+.tooltip:hover::before {
+    opacity: 1;
+}
+
+/* Responsive design helpers */
+@media (max-width: 768px) {
+    .feature-card {
+        margin-bottom: 1rem;
+    }
+    
+    .floating-leaf {
+        font-size: 1.5rem;
+    }
+    
+    .nav-link::after {
+        display: none;
+    }
+}
+
+/* Scroll personalizado */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--verde-medicina);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #1f4129;
+}
+
+/* Efectos para elementos interactivos */
+.interactive-element {
+    transition: var(--transition);
+}
+
+.interactive-element:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+}
+
+/* Gradientes personalizados */
+.gradient-green {
+    background: linear-gradient(135deg, var(--verde-medicina), #22c55e);
+}
+
+.gradient-gold {
+    background: linear-gradient(135deg, var(--dorado), #f59e0b);
+}
+
+.gradient-earth {
+    background: linear-gradient(135deg, var(--tierra), #a16207);
+}
+
+/* Efectos de partículas flotantes */
+.particle-effect {
+    position: relative;
+    overflow: hidden;
+}
+
+.particle-effect::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+    animation: float-particles 20s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes float-particles {
+    0% {
+        transform: translateY(100%) rotate(0deg);
+    }
+    100% {
+        transform: translateY(-100%) rotate(360deg);
+    }
+}
+
+/* Modo oscuro (opcional) */
+@media (prefers-color-scheme: dark) {
+    .dark-mode {
+        background: #1a1a1a;
+        color: #e5e7eb;
+    }
+    
+    .dark-mode .feature-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+}
+
+/* Animaciones de entrada para elementos */
+.fade-in-left {
+    animation: slideInFromLeft 0.6s ease-out forwards;
+}
+
+.fade-in-right {
+    animation: slideInFromRight 0.6s ease-out forwards;
+}
+
+/* Estados de carga */
+.skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* Efectos de cristal para elementos destacados */
+.glass-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* Animaciones de micro-interacciones */
+.micro-interaction {
+    transition: all 0.2s ease;
+}
+
+.micro-interaction:hover {
+    transform: translateY(-1px);
+}
+
+.micro-interaction:active {
+    transform: translateY(0);
+}
+
+/* Efectos para elementos de formulario mejorados */
+.form-floating {
+    position: relative;
+}
+
+.form-floating input {
+    height: 56px;
+    padding-top: 1.625rem;
+    padding-bottom: 0.625rem;
+}
+
+.form-floating label {
+    position: absolute;
+    top: 50%;
+    left: 0.75rem;
+    transform: translateY(-50%);
+    transition: all 0.2s ease-in-out;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.form-floating input:focus ~ label,
+.form-floating input:not(:placeholder-shown) ~ label {
+    top: 0.5rem;
+    font-size: 0.75rem;
+    opacity: 1;
+}
+
+/* Mejoras de accesibilidad */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Focus states mejorados */
+.focus-visible:focus {
+    outline: 2px solid var(--verde-medicina);
+    outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    body {
+        background: white !important;
+        color: black !important;
+    }
+}

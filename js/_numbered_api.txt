@@ -1,0 +1,345 @@
+﻿     1 // ConfiguraciÃ³n de API para PlantaMedicinal
+     2 // MigraciÃ³n de almacenamiento local a base de datos MySQL
+     3 
+     4 // ConfiguraciÃ³n base de la API
+     5 const apiConfig = {
+     6     // URL base de la API PHP (derivada de la ruta actual para soportar subcarpetas en XAMPP)
+     7     // Ej.: si navegas en /plantamedicinal/index.html => base '/plantamedicinal/php/api'
+     8     get baseURL() {
+     9         const path = window.location.pathname;
+    10         const basePath = path.endsWith('/') ? path : path.replace(/[^/]+$/, '/');
+    11         return `${basePath}php/api`;
+    12     },
+    13     
+    14     // Endpoints de la API
+    15     endpoints: {
+    16         // AutenticaciÃ³n
+    17         auth: {
+    18             login: '/auth.php?action=login',
+    19             register: '/auth.php?action=register', 
+    20             logout: '/auth.php?action=logout',
+    21             verify: '/auth.php?action=verify',
+    22             refresh: '/auth.php?action=refresh',
+    23             profile: '/auth.php?action=profile',
+    24             test: '/auth.php?action=test'
+    25         },
+    26         
+    27         // Plantas
+    28         plantas: {
+    29             list: '/plantas.php',
+    30             search: '/plantas.php?action=search',
+    31             get: '/plantas.php', // Para obtener por ID: /plantas.php?id=X
+    32             create: '/plantas.php?action=create',
+    33             update: '/plantas.php?action=update',
+    34             delete: '/plantas.php?action=delete',
+    35             favorite: '/plantas.php?action=favorite',
+    36             rate: '/plantas.php?action=rate'
+    37         },
+    38         
+    39         // Recetas
+    40         recetas: {
+    41             list: '/recetas.php',
+    42             search: '/recetas.php?action=search',
+    43             get: '/recetas.php', // Para obtener por ID: /recetas.php?id=X
+    44             create: '/recetas.php?action=create',
+    45             update: '/recetas.php?action=update',
+    46             delete: '/recetas.php?action=delete',
+    47             rate: '/recetas.php?action=rate',
+    48             comment: '/recetas.php?action=comment',
+    49             favorite: '/recetas.php?action=favorite'
+    50         },
+    51         
+    52         // Comunidad
+    53         comunidad: {
+    54             posts: '/comunidad.php/posts',
+    55             post: '/comunidad.php/posts',
+    56             comentarios: '/comunidad.php/comentarios',
+    57             comunidades: '/comunidad.php/comunidades',
+    58             categorias: '/comunidad.php/categorias',
+    59             votar: '/comunidad.php/votar',
+    60             notificaciones: '/comunidad.php/notificaciones'
+    61         },
+    62         
+    63         // AdministraciÃ³n
+    64         admin: {
+    65             dashboard: '/admin.php/dashboard',
+    66             usuarios: '/admin.php/usuarios',
+    67             moderacion: '/admin.php/moderacion',
+    68             reportes: '/admin.php/reportes',
+    69             logs: '/admin.php/logs',
+    70             estadisticas: '/admin.php/estadisticas',
+    71             configuracion: '/admin.php/configuracion'
+    72         }
+    73     },
+    74     
+    75     // ConfiguraciÃ³n de peticiones
+    76     defaultHeaders: {
+    77         'Content-Type': 'application/json',
+    78         'Accept': 'application/json'
+    79     },
+    80     
+    81     // Timeout por defecto (30 segundos)
+    82     timeout: 30000
+    83 };
+    84 
+    85 // Clase para manejo de API
+    86 class APIClient {
+    87     constructor() {
+    88         this.baseURL = apiConfig.baseURL;
+    89         this.timeout = apiConfig.timeout;
+    90         this.token = this.getStoredToken();
+    91     }
+    92     
+    93     // Obtener token almacenado
+    94     getStoredToken() {
+    95         return localStorage.getItem('plantamedicinal_token') || sessionStorage.getItem('plantamedicinal_token');
+    96     }
+    97     
+    98     // Configurar headers por defecto
+    99     getHeaders(includeAuth = true) {
+   100         const headers = { ...apiConfig.defaultHeaders };
+   101         
+   102         if (includeAuth && this.token) {
+   103             headers['Authorization'] = `Bearer ${this.token}`;
+   104         }
+   105         
+   106         return headers;
+   107     }
+   108     
+   109     // MÃ©todo genÃ©rico para hacer peticiones
+   110     async makeRequest(endpoint, options = {}) {
+   111         try {
+   112             let url = `${this.baseURL}${endpoint}`;
+   113             
+   114             const config = {
+   115                 method: options.method || 'GET',
+   116                 headers: this.getHeaders(options.includeAuth !== false),
+   117                 ...options
+   118             };
+   119             
+   120             // Si hay datos para enviar
+   121             if (options.data) {
+   122                 if (config.method === 'GET') {
+   123                     // Para GET, aÃ±adir como query params
+   124                     const params = new URLSearchParams(options.data);
+   125                     const separator = url.includes('?') ? '&' : '?';
+   126                     let finalUrl = `${url}${separator}${params}`;
+   127                     url = finalUrl;
+   128                 } else {
+   129                     // Para otros mÃ©todos, enviar como JSON en el body
+   130                     config.body = JSON.stringify(options.data);
+   131                 }
+   132             }
+   133             
+   134             // Crear AbortController para timeout
+   135             const controller = new AbortController();
+   136             const timeoutId = setTimeout(() => controller.abort(), this.timeout);
+   137             config.signal = controller.signal;
+   138             
+   139             // Realizar peticiÃ³n
+   140             const response = await fetch(url, config);
+   141             clearTimeout(timeoutId);
+   142             
+   143             // Verificar si la respuesta es exitosa
+   144             if (!response.ok) {
+   145                 const errorData = await response.json().catch(() => ({}));
+   146                 throw new APIError(`HTTP ${response.status}: ${errorData.message || 'Error en la peticiÃ³n'}`, response.status, errorData);
+   147             }
+   148             
+   149             // Parsear respuesta JSON
+   150             const data = await response.json();
+   151             
+   152             // Verificar si la API reporta Ã©xito
+   153             if (data.success === false) {
+   154                 throw new APIError(data.message || 'Error en la API', 400, data);
+   155             }
+   156             
+   157             return data;
+   158             
+   159         } catch (error) {
+   160             if (error.name === 'AbortError') {
+   161                 throw new APIError('Timeout: La peticiÃ³n tardÃ³ demasiado', 408);
+   162             }
+   163             
+   164             if (error instanceof APIError) {
+   165                 throw error;
+   166             }
+   167             
+   168             // Error de red o parsing
+   169             throw new APIError(`Error de conexiÃ³n: ${error.message}`, 0);
+   170         }
+   171     }
+   172     
+   173     // MÃ©todos HTTP especÃ­ficos
+   174     async get(endpoint, params = {}) {
+   175         return this.makeRequest(endpoint, {
+   176             method: 'GET',
+   177             data: params
+   178         });
+   179     }
+   180     
+   181     async post(endpoint, data = {}) {
+   182         return this.makeRequest(endpoint, {
+   183             method: 'POST',
+   184             data: data
+   185         });
+   186     }
+   187     
+   188     async put(endpoint, data = {}) {
+   189         return this.makeRequest(endpoint, {
+   190             method: 'PUT',
+   191             data: data
+   192         });
+   193     }
+   194     
+   195     async delete(endpoint) {
+   196         return this.makeRequest(endpoint, {
+   197             method: 'DELETE'
+   198         });
+   199     }
+   200     
+   201     // Actualizar token
+   202     setToken(token) {
+   203         this.token = token;
+   204         if (token) {
+   205             localStorage.setItem('plantamedicinal_token', token);
+   206         } else {
+   207             localStorage.removeItem('plantamedicinal_token');
+   208             sessionStorage.removeItem('plantamedicinal_token');
+   209         }
+   210     }
+   211 }
+   212 
+   213 // Clase para errores de API
+   214 class APIError extends Error {
+   215     constructor(message, status = 0, details = null) {
+   216         super(message);
+   217         this.name = 'APIError';
+   218         this.status = status;
+   219         this.details = details;
+   220     }
+   221 }
+   222 
+   223 // Instancia global del cliente API
+   224 const apiClient = new APIClient();
+   225 
+   226 // Funciones de utilidad para migraciÃ³n gradual
+   227 const legacyToAPIAdapter = {
+   228     // Adaptador para mantener compatibilidad con cÃ³digo existente
+   229     async migrateGetRequest(legacyFunction, apiEndpoint, params = {}) {
+   230         try {
+   231             // Intentar con la nueva API
+   232             return await apiClient.get(apiEndpoint, params);
+   233         } catch (error) {
+   234             console.warn('API fallback to legacy:', error.message);
+   235             // Fallback al mÃ©todo legacy si falla
+   236             return legacyFunction(params);
+   237         }
+   238     },
+   239     
+   240     async migratePostRequest(legacyFunction, apiEndpoint, data = {}) {
+   241         try {
+   242             // Intentar con la nueva API
+   243             return await apiClient.post(apiEndpoint, data);
+   244         } catch (error) {
+   245             console.warn('API fallback to legacy:', error.message);
+   246             // Fallback al mÃ©todo legacy si falla
+   247             return legacyFunction(data);
+   248         }
+   249     }
+   250 };
+   251 
+   252 // Utilidades para manejo de respuestas
+   253 const responseUtils = {
+   254     // Extraer datos de respuesta API
+   255     extractData(response) {
+   256         return response.data || response;
+   257     },
+   258     
+   259     // Extraer metadata de paginaciÃ³n
+   260     extractMeta(response) {
+   261         return response.meta || {};
+   262     },
+   263     
+   264     // Verificar si hay mÃ¡s pÃ¡ginas
+   265     hasNextPage(meta) {
+   266         return meta.has_next_page || false;
+   267     },
+   268     
+   269     // Obtener nÃºmero total de pÃ¡ginas
+   270     getTotalPages(meta) {
+   271         return meta.total_pages || 1;
+   272     },
+   273     
+   274     // Mostrar mensaje de Ã©xito
+   275     showSuccess(message) {
+   276         // Implementar segÃºn el sistema de notificaciones del frontend
+   277         if (window.showNotification) {
+   278             window.showNotification(message, 'success');
+   279         } else {
+   280             console.log('Success:', message);
+   281         }
+   282     },
+   283     
+   284     // Mostrar mensaje de error
+   285     showError(error) {
+   286         let message = 'Ha ocurrido un error';
+   287         
+   288         if (error instanceof APIError) {
+   289             message = error.message;
+   290         } else if (typeof error === 'string') {
+   291             message = error;
+   292         } else if (error.message) {
+   293             message = error.message;
+   294         }
+   295         
+   296         // Implementar segÃºn el sistema de notificaciones del frontend
+   297         if (window.showNotification) {
+   298             window.showNotification(message, 'error');
+   299         } else {
+   300             console.error('Error:', message);
+   301             alert(message); // Fallback temporal
+   302         }
+   303     }
+   304 };
+   305 
+   306 // Interceptor para manejo automÃ¡tico de errores de autenticaciÃ³n
+   307 const setupAuthInterceptor = () => {
+   308     // Extender el cliente API para manejar errores 401
+   309     const originalMakeRequest = apiClient.makeRequest.bind(apiClient);
+   310     
+   311     apiClient.makeRequest = async function(endpoint, options = {}) {
+   312         try {
+   313             return await originalMakeRequest(endpoint, options);
+   314         } catch (error) {
+   315             if (error.status === 401) {
+   316                 // Token expirado o invÃ¡lido
+   317                 this.setToken(null);
+   318                 if (window.authManager && typeof window.authManager.handleAuthError === 'function') {
+   319                     window.authManager.handleAuthError();
+   320                 } else {
+   321                     // Redirigir a login en la misma carpeta (soporta subcarpetas como /plantamedicinal/)
+   322                     const basePath = window.location.pathname.replace(/[^/]+$/, '');
+   323                     const params = 'session_expired=1';
+   324                     window.location.href = `${basePath}index.html?${params}`;
+   325                 }
+   326             }
+   327             throw error;
+   328         }
+   329     };
+   330 };
+   331 
+   332 // Inicializar interceptor
+   333 setupAuthInterceptor();
+   334 
+   335 // Log de configuraciÃ³n
+   336 console.log('ðŸ”§ API Configuration loaded');
+   337 console.log('ðŸ“¡ Base URL:', apiConfig.baseURL);
+   338 console.log('ðŸ”‘ Token available:', !!apiClient.token);
+   339 
+   340 // Exportar para uso global
+   341 window.apiConfig = apiConfig;
+   342 window.apiClient = apiClient;
+   343 window.APIError = APIError;
+   344 window.legacyToAPIAdapter = legacyToAPIAdapter;
+   345 window.responseUtils = responseUtils;

@@ -1,0 +1,117 @@
+[22-Oct-2025 00:54:50 Europe/Berlin] Error en consulta SQL: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'plantamedicinal.plantas' doesn't exist | SQL: UPDATE plantas SET popularidad = popularidad + 1 WHERE id = ?
+[22-Oct-2025 00:54:50 Europe/Berlin] Error en PlantasAPI: Error en la consulta a la base de datos
+[22-Oct-2025 00:55:18 Europe/Berlin] Error en consulta SQL: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'plantamedicinal.plantas' doesn't exist | SQL: UPDATE plantas SET popularidad = popularidad + 1 WHERE id = ?
+[22-Oct-2025 00:55:18 Europe/Berlin] Error en PlantasAPI: Error en la consulta a la base de datos
+[22-Oct-2025 01:04:27 Europe/Berlin] Error en consulta SQL: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'plantamedicinal.plantas' doesn't exist | SQL: SELECT r.*, 
+                       p.nombre_comun as planta_nombre_comun,
+                       p.nombre_cientifico as planta_nombre_cientifico,
+                       p.categoria as planta_categoria,
+                       u.nombre as autor_nombre,
+                       u.apellido as autor_apellido,
+                       u.rol as autor_rol,
+                       u.avatar as autor_avatar
+                FROM recetas r
+                JOIN plantas p ON r.planta_id = p.id
+                JOIN usuarios u ON r.autor_id = u.id
+                WHERE r.estado = 'aprobada'
+                ORDER BY r.created_at DESC
+                LIMIT 50 OFFSET 0
+[22-Oct-2025 01:04:27 Europe/Berlin] Error en RecetasAPI: Error en la consulta a la base de datos
+[22-Oct-2025 01:07:00 Europe/Berlin] Error en consulta SQL: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'plantamedicinal.plantas' doesn't exist | SQL: SELECT r.*, 
+                       p.nombre_comun as planta_nombre_comun,
+                       p.nombre_cientifico as planta_nombre_cientifico,
+                       p.categoria as planta_categoria,
+                       u.nombre as autor_nombre,
+                       u.apellido as autor_apellido,
+                       u.rol as autor_rol,
+                       u.avatar as autor_avatar
+                FROM recetas r
+                JOIN plantas p ON r.planta_id = p.id
+                JOIN usuarios u ON r.autor_id = u.id
+                WHERE r.estado = 'aprobada'
+                ORDER BY r.created_at DESC
+                LIMIT 50 OFFSET 0
+[22-Oct-2025 01:07:00 Europe/Berlin] Error en RecetasAPI: Error en la consulta a la base de datos
+[22-Oct-2025 01:07:30 Europe/Berlin] Error en consulta SQL: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'plantamedicinal.plantas' doesn't exist | SQL: UPDATE plantas SET popularidad = popularidad + 1 WHERE id = ?
+[22-Oct-2025 01:07:30 Europe/Berlin] Error en PlantasAPI: Error en la consulta a la base de datos
+[22-Oct-2025 01:07:34 Europe/Berlin] Error en consulta SQL: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'plantamedicinal.plantas' doesn't exist | SQL: UPDATE plantas SET popularidad = popularidad + 1 WHERE id = ?
+[22-Oct-2025 01:07:34 Europe/Berlin] Error en PlantasAPI: Error en la consulta a la base de datos
+[22-Oct-2025 01:09:29 Europe/Berlin] Error en consulta SQL: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'plantamedicinal.plantas' doesn't exist | SQL: SELECT r.*, 
+                       p.nombre_comun as planta_nombre_comun,
+                       p.nombre_cientifico as planta_nombre_cientifico,
+                       p.categoria as planta_categoria,
+                       u.nombre as autor_nombre,
+                       u.apellido as autor_apellido,
+                       u.rol as autor_rol,
+                       u.avatar as autor_avatar
+                FROM recetas r
+                JOIN plantas p ON r.planta_id = p.id
+                JOIN usuarios u ON r.autor_id = u.id
+                WHERE r.estado = 'aprobada'
+                ORDER BY r.created_at DESC
+                LIMIT 50 OFFSET 0
+[22-Oct-2025 01:09:29 Europe/Berlin] Error en RecetasAPI: Error en la consulta a la base de datos
+[22-Oct-2025 01:15:20 Europe/Berlin] Error en consulta SQL: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'r.created_at' in 'order clause' | SQL: SELECT r.*, 
+                       pm.nombre as planta_nombre_comun,
+                       pm.nombre_cientifico as planta_nombre_cientifico,
+                       pm.categoria as planta_categoria,
+                       pm.imagen_url as planta_imagen,
+                       u.nombre as autor_nombre,
+                       u.apellido as autor_apellido,
+                       u.rol as autor_rol,
+                       u.avatar as autor_avatar
+                FROM recetas r
+                JOIN plantas_medicinales pm ON r.planta_id = pm.id
+                JOIN usuarios u ON r.usuario_id = u.id
+                WHERE r.activa = TRUE AND r.estado_moderacion = 'aprobada'
+                ORDER BY r.created_at DESC
+                LIMIT 50 OFFSET 0
+[22-Oct-2025 01:15:20 Europe/Berlin] Error en RecetasAPI: Error en la consulta a la base de datos
+[22-Oct-2025 01:24:04 Europe/Berlin] Error en consulta SQL: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'r.created_at' in 'order clause' | SQL: SELECT r.*, 
+                       pm.nombre as planta_nombre_comun,
+                       pm.nombre_cientifico as planta_nombre_cientifico,
+                       pm.categoria as planta_categoria,
+                       pm.imagen_url as planta_imagen,
+                       u.nombre as autor_nombre,
+                       u.apellido as autor_apellido,
+                       u.rol as autor_rol,
+                       u.avatar as autor_avatar
+                FROM recetas r
+                JOIN plantas_medicinales pm ON r.planta_id = pm.id
+                JOIN usuarios u ON r.usuario_id = u.id
+                WHERE r.activa = TRUE AND r.estado_moderacion = 'aprobada'
+                ORDER BY r.created_at DESC
+                LIMIT 50 OFFSET 0
+[22-Oct-2025 01:24:04 Europe/Berlin] Error en RecetasAPI: Error en la consulta a la base de datos
+[22-Oct-2025 03:03:34 Europe/Berlin] Error en consulta SQL: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'r.created_at' in 'order clause' | SQL: SELECT r.*, 
+                       pm.nombre as planta_nombre_comun,
+                       pm.nombre_cientifico as planta_nombre_cientifico,
+                       pm.categoria as planta_categoria,
+                       pm.imagen_url as planta_imagen,
+                       u.nombre as autor_nombre,
+                       u.apellido as autor_apellido,
+                       u.rol as autor_rol,
+                       u.avatar as autor_avatar
+                FROM recetas r
+                JOIN plantas_medicinales pm ON r.planta_id = pm.id
+                JOIN usuarios u ON r.usuario_id = u.id
+                WHERE r.activa = TRUE AND r.estado_moderacion = 'aprobada'
+                ORDER BY r.created_at DESC
+                LIMIT 50 OFFSET 0
+[22-Oct-2025 03:03:34 Europe/Berlin] Error en RecetasAPI: Error en la consulta a la base de datos
+[22-Oct-2025 03:03:52 Europe/Berlin] Error en consulta SQL: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'r.created_at' in 'order clause' | SQL: SELECT r.*, 
+                       pm.nombre as planta_nombre_comun,
+                       pm.nombre_cientifico as planta_nombre_cientifico,
+                       pm.categoria as planta_categoria,
+                       pm.imagen_url as planta_imagen,
+                       u.nombre as autor_nombre,
+                       u.apellido as autor_apellido,
+                       u.rol as autor_rol,
+                       u.avatar as autor_avatar
+                FROM recetas r
+                JOIN plantas_medicinales pm ON r.planta_id = pm.id
+                JOIN usuarios u ON r.usuario_id = u.id
+                WHERE r.activa = TRUE AND r.estado_moderacion = 'aprobada'
+                ORDER BY r.created_at DESC
+                LIMIT 50 OFFSET 0
+[22-Oct-2025 03:03:52 Europe/Berlin] Error en RecetasAPI: Error en la consulta a la base de datos
