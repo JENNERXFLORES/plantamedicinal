@@ -59,6 +59,9 @@ const apiConfig = {
             votar: '/comunidad.php?endpoint=votar',
             notificaciones: '/comunidad.php?endpoint=notificaciones'
         },
+
+        // Estadísticas públicas
+        estadisticas: '/estadisticas.php',
         
         // AdministraciÃ³n
         admin: {

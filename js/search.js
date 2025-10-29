@@ -504,7 +504,23 @@ const advancedFilters = {
                 </div>
             </div>
         `;
-        
+
+        // Normalizar textos con acentos por si el archivo tuvo problemas de codificación
+        try {
+            const labels = panel.querySelectorAll('label');
+            if (labels[0]) labels[0].textContent = 'Categoría';
+            if (labels[1]) labels[1].textContent = 'Rating mínimo';
+            if (labels[2]) labels[2].textContent = 'Región';
+            const optAll = panel.querySelector('#filterCategoria option[value=""]');
+            if (optAll) optAll.textContent = 'Todas las categorías';
+            const placeholder = panel.querySelector('#filterRegion');
+            if (placeholder) placeholder.placeholder = 'Ej: América del Sur';
+            const optRating = panel.querySelector('#filterOrden option[value="rating"]');
+            if (optRating) optRating.textContent = 'Rating más alto';
+        } catch (e) {
+            console.warn('No se pudieron normalizar los textos de filtros:', e.message);
+        }
+
         return panel;
     },
     
@@ -629,4 +645,5 @@ document.addEventListener('DOMContentLoaded', () => {
     
     console.log('ðŸ” Sistema de bÃºsqueda avanzada inicializado');
 });
+
 

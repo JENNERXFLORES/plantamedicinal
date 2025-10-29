@@ -18,6 +18,11 @@ const comunidadState = {
 };
 
 // Base de datos de comunidad
+// Imagen placeholder segura para comunidades (SVG codificado)
+const comunidadPlaceholderImage = (() => {
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300"><rect width="100%" height="100%" fill="#e5e7eb"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#6b7280" font-family="Arial" font-size="24">Comunidad</text></svg>`;
+    return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+})();
 const comunidadDatabase = {
     // Comunidades indígenas colaboradoras
     comunidades: [
@@ -273,7 +278,7 @@ const comunidadManager = {
                 miembros_registrados: c.miembros_registrados || c.total_miembros || 0,
                 recetas_compartidas: c.recetas_compartidas || c.total_recetas || 0,
                 contacto: c.contacto || { representante: '', email: '', telefono: '' },
-                imagen: c.imagen || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300"><rect width="100%" height="100%" fill="%23e5e7eb"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%236b7280" font-family="Arial" font-size="24">Comunidad</text></svg>',
+                imagen: c.imagen || comunidadPlaceholderImage,
                 activa: c.activa !== false,
                 fecha_union: c.fecha_creacion || new Date(),
                 idiomas: c.idiomas ? (Array.isArray(c.idiomas) ? c.idiomas : Object.values(c.idiomas)) : [],
@@ -397,7 +402,7 @@ const comunidadManager = {
         container.innerHTML = comunidadState.comunidades.map(comunidad => `
             <div class="plant-card cursor-pointer group" onclick="comunidadManager.showComunidadDetails(${comunidad.id})">
                 <div class="relative overflow-hidden rounded-xl mb-4">
-                    <img src="${comunidad.imagen}" alt="${comunidad.nombre}" 
+                    <img src='${comunidad.imagen}' alt='${comunidad.nombre}' 
                          class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300">
                     <div class="absolute top-3 left-3">
                         ${comunidad.activa ? 
