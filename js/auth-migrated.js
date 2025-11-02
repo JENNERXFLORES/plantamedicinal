@@ -1,7 +1,7 @@
-﻿// Sistema de autenticaciÃ³n migrado a MySQL para PlantaMedicinal
-// Manejo de login, registro y gestiÃ³n de usuarios con APIs PHP
+// Sistema de autenticación migrado a MySQL para PlantaMedicinal
+// Manejo de login, registro y gestión de usuarios con APIs PHP
 
-// ConfiguraciÃ³n de autenticaciÃ³n (actualizada para API)
+// Configuración de autenticación (actualizada para API)
 const authConfig = {
     tokenKey: 'plantamedicinal_token',
     userKey: 'plantamedicinal_user',
@@ -13,7 +13,7 @@ const authConfig = {
     }
 };
 
-// Estado de autenticaciÃ³n
+// Estado de autenticación
 const authState = {
     isAuthenticated: false,
     currentUser: null,
@@ -21,20 +21,35 @@ const authState = {
     sessionExpiry: null
 };
 
-// Utilidades de autenticaciÃ³n actualizadas para API
+// Utilidades de autenticación actualizadas para API
 const authUtils = {
-    // Validar email
+    // Normalizar email quitando espacios y caracteres invisibles
+    normalizeEmail: (email) => {
+        try {
+            return (email ?? '')
+                .toString()
+                .normalize('NFKC')
+                .replace(/[\u200B-\u200D\uFEFF]/g, '') // zero-width chars
+                .replace(/\s+/g, ' ') // colapsar espacios
+                .trim()
+                .toLowerCase();
+        } catch (_) {
+            return '';
+        }
+    },
+    // Validar email (con normalizaci�n segura)
     validateEmail: (email) => {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return re.test(email);
+        const value = authUtils.normalizeEmail(email);
+        return value.length > 0 && re.test(value);
     },
 
-    // Validar contraseÃ±a
+    // Validar contraseña
     validatePassword: (password) => {
         return password.length >= 6;
     },
 
-    // Almacenar datos de sesiÃ³n
+    // Almacenar datos de sesión
     setSession: (user, token) => {
         const expiry = Date.now() + authConfig.sessionTimeout;
         
@@ -53,7 +68,7 @@ const authUtils = {
         }
     },
 
-    // Limpiar sesiÃ³n
+    // Limpiar sesión
     clearSession: () => {
         localStorage.removeItem(authConfig.tokenKey);
         localStorage.removeItem(authConfig.userKey);
@@ -70,14 +85,14 @@ const authUtils = {
         }
     },
 
-    // Verificar si la sesiÃ³n es vÃ¡lida
+    // Verificar si la sesión es válida
     isSessionValid: () => {
         const expiry = localStorage.getItem('plantamedicinal_expiry');
         const token = localStorage.getItem(authConfig.tokenKey);
         return !!expiry && !!token && Date.now() < parseInt(expiry);
     },
 
-    // Restaurar sesiÃ³n desde localStorage
+    // Restaurar sesión desde localStorage
     restoreSession: async () => {
         if (authUtils.isSessionValid()) {
             const token = localStorage.getItem(authConfig.tokenKey);
@@ -125,7 +140,7 @@ const authUtils = {
     // Verificar si es proveedor o admin
     isProvider: () => authUtils.hasRole(authConfig.roles.PROVIDER) || authUtils.isAdmin(),
 
-    // Verificar permisos mÃ­nimos
+    // Verificar permisos mínimos
     hasMinRole: (requiredRole) => {
         const roleHierarchy = {
             'usuario': 1,
@@ -140,14 +155,14 @@ const authUtils = {
     }
 };
 
-// Gestor de autenticaciÃ³n migrado a API
+// Gestor de autenticación migrado a API
 const authManager = {
-    // Inicializar el sistema de autenticaciÃ³n
+    // Inicializar el sistema de autenticación
     init: async () => {
         console.log('Initializing Auth Manager (API Mode)...');
         
         try {
-            // Intentar restaurar sesiÃ³n existente
+            // Intentar restaurar sesión existente
             const restored = await authUtils.restoreSession();
             
             if (restored) {
@@ -157,7 +172,7 @@ const authManager = {
                 console.log('No valid session found');
             }
         } catch (error) {
-            console.error('âŒ Error initializing auth:', error);
+            console.error('Error initializing auth:', error);
         }
     },
 
@@ -165,27 +180,29 @@ const authManager = {
     login: async (email, password, remember = false) => {
         try {
             // Validar entrada
-            if (!authUtils.validateEmail(email)) {
-                throw new Error('Email no vÃ¡lido');
-            }
+            email = authUtils.normalizeEmail(email);
+            if (!email) { throw new Error('Ingresa tu email'); }
 
             if (!authUtils.validatePassword(password)) {
-                throw new Error('La contraseÃ±a debe tener al menos 6 caracteres');
+                throw new Error('La contrasena debe tener al menos 6 caracteres');
             }
 
             // Mostrar loading
             authManager.showLoading(true);
 
+            // Normalizar email antes de enviar
+            const emailNormalized = authUtils.normalizeEmail(email);
+
             // Llamada a la API
             const response = await apiClient.post('/auth.php?action=login', {
-                email: email,
+                email: emailNormalized,
                 password: password,
                 remember: remember
             });
 
             const { user, token } = response.data;
 
-            // Establecer sesiÃ³n
+            // Establecer sesión
             authUtils.setSession(user, token);
 
             // Actualizar UI
@@ -197,14 +214,14 @@ const authManager = {
             return {
                 success: true,
                 user: user,
-                message: 'Inicio de sesiÃ³n exitoso'
+                message: 'Inicio de sesion exitoso'
             };
 
         } catch (error) {
-            console.error('âŒ Login error:', error);
+            console.error('Login error:', error);
             return {
                 success: false,
-                message: error.message || 'Error al iniciar sesiÃ³n'
+                message: error.message || 'Error al iniciar sesion'
             };
         } finally {
             authManager.showLoading(false);
@@ -221,12 +238,10 @@ const authManager = {
                 throw new Error('Nombre y apellido son obligatorios');
             }
 
-            if (!authUtils.validateEmail(email)) {
-                throw new Error('Email no vÃ¡lido');
-            }
+            if (!email) { throw new Error('Ingresa tu email'); }
 
             if (!authUtils.validatePassword(password)) {
-                throw new Error('La contraseÃ±a debe tener al menos 6 caracteres');
+                throw new Error('La contrasena debe tener al menos 6 caracteres');
             }
 
             // Mostrar loading
@@ -246,12 +261,12 @@ const authManager = {
 
             return {
                 success: true,
-                message: 'Registro exitoso. Ya puedes iniciar sesiÃ³n.',
+                message: 'Registro exitoso. Ya puedes iniciar sesion.',
                 user: response.data.user
             };
 
         } catch (error) {
-            console.error('âŒ Registration error:', error);
+            console.error('Registration error:', error);
             return {
                 success: false,
                 message: error.message || 'Error al registrarse'
@@ -271,14 +286,14 @@ const authManager = {
         } catch (error) {
             console.warn('Logout API call failed:', error.message);
         } finally {
-            // Limpiar sesiÃ³n local siempre
+            // Limpiar sesión local siempre
             authUtils.clearSession();
             authManager.updateUI();
             console.log('Logged out successfully');
         }
     },
 
-    // Verificar autenticaciÃ³n
+    // Verificar autenticación
     checkAuth: () => {
         return authState.isAuthenticated && authUtils.isSessionValid();
     },
@@ -300,12 +315,12 @@ const authManager = {
         }
     },
 
-    // Manejar errores de autenticaciÃ³n
+    // Manejar errores de autenticación
     handleAuthError: () => {
         authUtils.clearSession();
         authManager.updateUI();
         
-        // Redirigir a login si no estamos ya ahÃ­
+        // Redirigir a login si no estamos ya ahí
         if (!window.location.pathname.includes('index.html')) {
             const basePath = window.location.pathname.replace(/[^/]+$/, '');
             window.location.href = `${basePath}index.html?session_expired=1`;
@@ -317,7 +332,7 @@ const authManager = {
         const isAuthenticated = authManager.checkAuth();
         const user = authState.currentUser;
 
-        // Actualizar elementos de navegaciÃ³n
+        // Actualizar elementos de navegación
         const loginBtn = document.getElementById('loginBtn');
         const registerBtn = document.getElementById('registerBtn');
         const userMenu = document.getElementById('userMenu');
@@ -325,13 +340,13 @@ const authManager = {
         const logoutBtn = document.getElementById('logoutBtn');
 
         if (isAuthenticated && user) {
-            // Mostrar menÃº de usuario
+            // Mostrar menú de usuario
             if (loginBtn) loginBtn.style.display = 'none';
             if (registerBtn) registerBtn.style.display = 'none';
             if (userMenu) userMenu.style.display = 'block';
             if (userName) userName.textContent = `${user.nombre} ${user.apellido}`;
 
-            // Mostrar/ocultar opciones segÃºn rol
+            // Mostrar/ocultar opciones según rol
             authManager.updateRoleBasedUI(user.rol);
 
         } else {
@@ -341,7 +356,7 @@ const authManager = {
             if (userMenu) userMenu.style.display = 'none';
         }
 
-        // Configurar event listeners si no estÃ¡n configurados
+        // Configurar event listeners si no están configurados
         if (logoutBtn && !logoutBtn.hasAttribute('data-listener')) {
             logoutBtn.addEventListener('click', authManager.logout);
             logoutBtn.setAttribute('data-listener', 'true');
@@ -353,7 +368,7 @@ const authManager = {
         const adminElements = document.querySelectorAll('.admin-only');
         const providerElements = document.querySelectorAll('.provider-only');
 
-        // Mostrar/ocultar elementos segÃºn rol
+        // Mostrar/ocultar elementos según rol
         adminElements.forEach(el => {
             el.style.display = role === 'administrador' ? 'block' : 'none';
         });
@@ -362,7 +377,7 @@ const authManager = {
             el.style.display = ['proveedor', 'administrador'].includes(role) ? 'block' : 'none';
         });
 
-        // Actualizar links de navegaciÃ³n
+        // Actualizar links de navegación
         const adminLink = document.getElementById('adminLink');
         if (adminLink) {
             adminLink.style.display = role === 'administrador' ? 'block' : 'none';
@@ -387,7 +402,7 @@ const authManager = {
         });
     },
 
-    // Proteger rutas que requieren autenticaciÃ³n
+    // Proteger rutas que requieren autenticación
     requireAuth: (minRole = 'usuario') => {
         if (!authManager.checkAuth()) {
             {
@@ -398,7 +413,7 @@ const authManager = {
         }
 
         if (!authUtils.hasMinRole(minRole)) {
-            alert('No tienes permisos suficientes para acceder a esta pÃ¡gina');
+            alert('No tienes permisos suficientes para acceder a esta página');
             {
                 const basePath = window.location.pathname.replace(/[^/]+$/, '');
                 window.location.href = `${basePath}index.html`;
@@ -414,7 +429,7 @@ const authManager = {
         try {
             const response = await apiClient.get('/auth.php?action=profile');
             
-            // Actualizar usuario en la sesiÃ³n
+            // Actualizar usuario en la sesión
             authState.currentUser = response.data.user;
             localStorage.setItem(authConfig.userKey, JSON.stringify(response.data.user));
             
@@ -430,7 +445,7 @@ const authManager = {
         try {
             const response = await apiClient.put('/auth.php?action=profile', profileData);
             
-            // Actualizar usuario en la sesiÃ³n
+            // Actualizar usuario en la sesión
             authState.currentUser = response.data.user;
             localStorage.setItem(authConfig.userKey, JSON.stringify(response.data.user));
             
@@ -459,17 +474,19 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             
             const formData = new FormData(loginForm);
-            const email = formData.get('email');
-            const password = formData.get('password');
-            const remember = formData.get('remember') === 'on';
+            const email = formData.get('email') || document.getElementById('loginEmail')?.value || '';
+            const password = formData.get('password') || document.getElementById('loginPassword')?.value || '';
+            const remember = formData.has('remember')
+                ? (formData.get('remember') === 'on' || formData.get('remember') === 'true' || formData.get('remember') === '1')
+                : (document.querySelector('#loginForm input[type="checkbox"][name="remember"]')?.checked || false);
 
             const result = await authManager.login(email, password, remember);
             
             if (result.success) {
-                // Redirigir segÃºn rol o pÃ¡gina solicitada
+                // Redirigir según rol o página solicitada
                 const urlParams = new URLSearchParams(window.location.search);
                 const redirect = urlParams.get('redirect') || 'index.html';
-                // Si redirect es relativo, mantÃ©n la carpeta actual
+                // Si redirect es relativo, mantén la carpeta actual
                 if (/^https?:\/\//i.test(redirect) || redirect.startsWith('/')) {
                     window.location.href = redirect;
                 } else {
@@ -493,12 +510,18 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             
             const formData = new FormData(registerForm);
+            const getField = (name, id) => {
+                const byName = formData.get(name);
+                if (byName && typeof byName === 'string') return byName;
+                const el = document.getElementById(id);
+                return el && typeof el.value === 'string' ? el.value : '';
+            };
             const userData = {
-                nombre: formData.get('nombre'),
-                apellido: formData.get('apellido'),
-                email: formData.get('email'),
-                password: formData.get('password'),
-                rol: formData.get('rol') || 'usuario'
+                nombre: getField('nombre', 'registerName'),
+                apellido: getField('apellido', 'registerLastName'),
+                email: getField('email', 'registerEmail'),
+                password: getField('password', 'registerPassword'),
+                rol: formData.get('rol') || (document.getElementById('registerRole')?.value || 'usuario')
             };
 
             const result = await authManager.register(userData);
@@ -513,10 +536,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Limpiar formulario
                 registerForm.reset();
                 
+                // Cerrar modal de registro si existe
+                if (typeof window.cerrarRegistro === 'function') {
+                    try { window.cerrarRegistro(); } catch (e) { /* ignore */ }
+                } else {
+                    // Fallback: ocultar modal manualmente
+                    const modal = document.getElementById('registerModal');
+                    const content = document.getElementById('registerContent');
+                    if (modal && content) {
+                        content.classList.add('scale-95', 'opacity-0');
+                        content.classList.remove('scale-100', 'opacity-100');
+                        setTimeout(() => modal.classList.add('hidden'), 300);
+                    }
+                }
+
                 // Cambiar a tab de login si existe
                 const loginTab = document.getElementById('loginTab');
                 if (loginTab) {
                     loginTab.click();
+                }
+
+                // Opcional: abrir modal de login si no hay sesi?n activa
+                if (window.authManager && typeof window.authManager.checkAuth === 'function' && !window.authManager.checkAuth()) {
+                    if (typeof window.mostrarLogin === 'function') {
+                        try { window.mostrarLogin(); } catch (e) { /* ignore */ }
+                    }
                 }
             } else {
                 if (window.responseUtils) {
@@ -532,7 +576,7 @@ document.addEventListener('DOMContentLoaded', () => {
     authManager.init();
 });
 
-// Renovar token periÃ³dicamente
+// Renovar token periódicamente
 setInterval(async () => {
     if (authManager.checkAuth()) {
         await authManager.refreshTokenIfNeeded();
@@ -546,6 +590,7 @@ window.authUtils = authUtils;
 window.authManager = authManager;
 
 console.log('Auth Manager (API Mode) loaded successfully');
+
 
 
 

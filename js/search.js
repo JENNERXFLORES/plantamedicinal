@@ -1,54 +1,54 @@
-﻿// Sistema de bÃºsqueda avanzada para PlantaMedicinal
-// Funcionalidades de bÃºsqueda inteligente, filtros y sugerencias
+﻿// Sistema de búsqueda avanzada para PlantaMedicinal
+// Funcionalidades de búsqueda inteligente, filtros y sugerencias
 
-// ConfiguraciÃ³n del sistema de bÃºsqueda
+// Configuración del sistema de búsqueda
 const searchConfig = {
     minSearchLength: 2,
     maxResults: 20,
     debounceTime: 300,
     popularSearches: [
-        'manzanilla', 'dolor de cabeza', 'digestiÃ³n', 'insomnio', 
-        'anti-inflamatorio', 'sÃ¡bila', 'jengibre', 'lavanda'
+        'manzanilla', 'dolor de cabeza', 'digestión', 'insomnio', 
+        'anti-inflamatorio', 'sábila', 'jengibre', 'lavanda'
     ],
     categories: [
-        'Digestiva', 'DermatolÃ³gica', 'InmunolÃ³gica', 'AromÃ¡tica', 
+        'Digestiva', 'Dermatológica', 'Inmunológica', 'Aromática', 
         'Cardiovascular', 'Respiratoria', 'Nerviosa'
     ]
 };
 
-// Ãndice de bÃºsqueda para optimizaciÃ³n
+// Ãndice de búsqueda para optimización
 const searchIndex = {
     plantas: new Map(),
     sintomas: new Map(),
-    categorias: new Map(),
+    categorías: new Map(),
     initialized: false,
 
-    // Inicializar Ã­ndices de bÃºsqueda
+    // Inicializar índices de búsqueda
     init: () => {
         if (searchIndex.initialized) return;
 
         dataManager.plantas.forEach(planta => {
-            // Indexar por nombre comÃºn
-            const nombreComun = planta.nombre_comun.toLowerCase();
+            // Indexar por nombre común
+            const nombreComun = (planta.nombre_comun || planta.nombre || '').toLowerCase();
             searchIndex.addToIndex(searchIndex.plantas, nombreComun, planta);
             
-            // Indexar por nombre cientÃ­fico
-            const nombreCientifico = planta.nombre_cientifico.toLowerCase();
-            searchIndex.addToIndex(searchIndex.plantas, nombreCientifico, planta);
+            // Indexar por nombre científico
+            const nombrecientífico = (planta.nombre_científico || planta.nombre_cientifico || '').toLowerCase();
+            searchIndex.addToIndex(searchIndex.plantas, nombrecientífico, planta);
             
-            // Indexar por beneficios/sÃ­ntomas
-            planta.beneficios.forEach(beneficio => {
-                const beneficioLower = beneficio.toLowerCase();
+            // Indexar por beneficios/síntomas
+            (Array.isArray(planta.beneficios) ? planta.beneficios : []).forEach(beneficio => {
+                const beneficioLower = (beneficio ?? '').toString().toLowerCase();
                 searchIndex.addToIndex(searchIndex.sintomas, beneficioLower, planta);
             });
             
-            // Indexar por categorÃ­a
-            const categoria = planta.categoria.toLowerCase();
-            searchIndex.addToIndex(searchIndex.categorias, categoria, planta);
+            // Indexar por Categoría
+            const Categoría = (planta.Categoría || planta.Categoría || '').toLowerCase();
+            searchIndex.addToIndex(searchIndex.categorías, Categoría, planta);
             
-            // Indexar palabras clave de descripciÃ³n
-            const descripcionWords = planta.descripcion.toLowerCase().split(' ');
-            descripcionWords.forEach(word => {
+            // Indexar palabras clave de descripción
+            const descripciónWords = (planta.descripcion || planta.descripción || '').toLowerCase().split(' ');
+            descripciónWords.forEach(word => {
                 if (word.length > 3) {
                     searchIndex.addToIndex(searchIndex.plantas, word, planta);
                 }
@@ -59,7 +59,7 @@ const searchIndex = {
         console.log('Indice de busqueda inicializado');
     },
 
-    // Agregar elemento al Ã­ndice
+    // Agregar elemento al índice
     addToIndex: (index, key, item) => {
         if (!index.has(key)) {
             index.set(key, []);
@@ -71,7 +71,7 @@ const searchIndex = {
         }
     },
 
-    // Buscar en Ã­ndice
+    // Buscar en índice
     searchInIndex: (index, term) => {
         const results = new Set();
         
@@ -84,10 +84,13 @@ const searchIndex = {
         return Array.from(results);
     }
 };
+// Ensure ASCII map aliases
+searchIndex.sintomas = searchIndex.sintomas || new Map();
+searchIndex.categorías = searchIndex.categorías || new Map();
 
-// Motor de bÃºsqueda inteligente
+// Motor de búsqueda inteligente
 const searchEngine = {
-    // BÃºsqueda principal
+    // Búsqueda principal
     search: (query, filters = {}) => {
         if (!query || query.length < searchConfig.minSearchLength) {
             return [];
@@ -98,17 +101,17 @@ const searchEngine = {
         
         let results = new Set();
 
-        // BÃºsqueda exacta
+        // Búsqueda exacta
         const exactMatches = searchEngine.exactSearch(normalizedQuery);
         exactMatches.forEach(match => results.add(match));
 
-        // BÃºsqueda por tokens
+        // Búsqueda por tokens
         tokens.forEach(token => {
             const tokenResults = searchEngine.tokenSearch(token);
             tokenResults.forEach(result => results.add(result));
         });
 
-        // BÃºsqueda difusa (fuzzy)
+        // Búsqueda difusa (fuzzy)
         const fuzzyResults = searchEngine.fuzzySearch(normalizedQuery);
         fuzzyResults.forEach(result => results.add(result));
 
@@ -124,15 +127,15 @@ const searchEngine = {
         return finalResults.slice(0, searchConfig.maxResults);
     },
 
-    // BÃºsqueda exacta
+    // Búsqueda exacta
     exactSearch: (query) => {
         const results = [];
         
         dataManager.plantas.forEach(planta => {
-            const nombreComun = planta.nombre_comun.toLowerCase();
-            const nombreCientifico = planta.nombre_cientifico.toLowerCase();
+            const nombreComun = (planta.nombre_comun || planta.nombre || '').toLowerCase();
+            const nombrecientífico = (planta.nombre_científico || planta.nombre_cientifico || '').toLowerCase();
             
-            if (nombreComun === query || nombreCientifico === query) {
+            if (nombreComun === query || nombrecientífico === query) {
                 results.push({ ...planta, matchType: 'exact', relevance: 100 });
             }
         });
@@ -140,7 +143,7 @@ const searchEngine = {
         return results;
     },
 
-    // BÃºsqueda por tokens
+    // Búsqueda por tokens
     tokenSearch: (token) => {
         const results = [];
         
@@ -150,35 +153,35 @@ const searchEngine = {
             results.push({ ...planta, matchType: 'name', relevance: 80 });
         });
         
-        // Buscar en sÃ­ntomas
+        // Buscar en síntomas
         const sintomaResults = searchIndex.searchInIndex(searchIndex.sintomas, token);
         sintomaResults.forEach(planta => {
             results.push({ ...planta, matchType: 'symptom', relevance: 70 });
         });
         
-        // Buscar en categorÃ­as
-        const categoriaResults = searchIndex.searchInIndex(searchIndex.categorias, token);
-        categoriaResults.forEach(planta => {
+        // Buscar en categorías
+        const CategoríaResults = searchIndex.searchInIndex(searchIndex.categorías, token);
+        CategoríaResults.forEach(planta => {
             results.push({ ...planta, matchType: 'category', relevance: 60 });
         });
         
         return results;
     },
 
-    // BÃºsqueda difusa (aproximada)
+    // Búsqueda difusa (aproximada)
     fuzzySearch: (query) => {
         const results = [];
         const threshold = 0.6; // Umbral de similitud
         
         dataManager.plantas.forEach(planta => {
-            const nombreComun = planta.nombre_comun.toLowerCase();
-            const nombreCientifico = planta.nombre_cientifico.toLowerCase();
+            const nombreComun = (planta.nombre_comun || planta.nombre || '').toLowerCase();
+            const nombrecientífico = (planta.nombre_científico || planta.nombre_cientifico || '').toLowerCase();
             
             // Calcular similitud usando distancia de Levenshtein
             const similarityComun = searchEngine.calculateSimilarity(query, nombreComun);
-            const similarityCientifico = searchEngine.calculateSimilarity(query, nombreCientifico);
+            const similaritycientífico = searchEngine.calculateSimilarity(query, nombrecientífico);
             
-            const maxSimilarity = Math.max(similarityComun, similarityCientifico);
+            const maxSimilarity = Math.max(similarityComun, similaritycientífico);
             
             if (maxSimilarity >= threshold) {
                 results.push({ 
@@ -247,7 +250,7 @@ const searchEngine = {
         
         if (filters.categoria && filters.categoria !== 'todos') {
             filteredResults = filteredResults.filter(planta => 
-                planta.categoria.toLowerCase() === filters.categoria.toLowerCase()
+                (planta.categoria || planta.Categoría || '').toLowerCase() === filters.categoria.toLowerCase()
             );
         }
         
@@ -259,7 +262,7 @@ const searchEngine = {
         
         if (filters.region) {
             filteredResults = filteredResults.filter(planta => 
-                planta.region.toLowerCase().includes(filters.region.toLowerCase())
+                (planta.region || planta.origen || '').toLowerCase().includes((filters.region || '').toLowerCase())
             );
         }
         
@@ -293,14 +296,14 @@ const searchEngine = {
             // Bonus por rating
             relevance += (result.rating || 0) * 5;
             
-            // Bonus por mÃºltiples coincidencias de tokens
+            // Bonus por múltiples coincidencias de tokens
             const matchingTokens = tokens.filter(token => {
-                const nombreComun = result.nombre_comun.toLowerCase();
-                const nombreCientifico = result.nombre_cientifico.toLowerCase();
-                const beneficios = result.beneficios.join(' ').toLowerCase();
+                const nombreComun = (result.nombre_comun || result.nombre || '').toLowerCase();
+                const nombrecientífico = (result.nombre_científico || result.nombre_cientifico || '').toLowerCase();
+                const beneficios = (Array.isArray(result.beneficios) ? result.beneficios.join(' ') : '').toLowerCase();
                 
                 return nombreComun.includes(token) || 
-                       nombreCientifico.includes(token) || 
+                       nombrecientífico.includes(token) || 
                        beneficios.includes(token);
             });
             
@@ -324,20 +327,20 @@ const suggestionSystem = {
         
         // Sugerencias de nombres de plantas
         dataManager.plantas.forEach(planta => {
-            if (planta.nombre_comun.toLowerCase().includes(normalizedQuery)) {
+            if ((planta.nombre_comun || planta.nombre || '').toLowerCase().includes(normalizedQuery)) {
                 suggestions.add(planta.nombre_comun);
             }
             
-            if (planta.nombre_cientifico.toLowerCase().includes(normalizedQuery)) {
-                suggestions.add(planta.nombre_cientifico);
+            if ((planta.nombre_científico || planta.nombre_cientifico || '').toLowerCase().includes(normalizedQuery)) {
+                suggestions.add(planta.nombre_científico || planta.nombre_cientifico)
             }
         });
         
-        // Sugerencias de sÃ­ntomas/beneficios
+        // Sugerencias de síntomas/beneficios
         const allBeneficios = new Set();
         dataManager.plantas.forEach(planta => {
-            planta.beneficios.forEach(beneficio => {
-                if (beneficio.toLowerCase().includes(normalizedQuery)) {
+            (Array.isArray(planta.beneficios) ? planta.beneficios : []).forEach(beneficio => {
+                if ((beneficio ?? '').toString().toLowerCase().includes(normalizedQuery)) {
                     allBeneficios.add(beneficio);
                 }
             });
@@ -389,7 +392,7 @@ const suggestionSystem = {
     }
 };
 
-// Sistema de historial de bÃºsqueda
+// Sistema de historial de búsqueda
 const searchHistory = {
     maxHistorySize: 10,
     
@@ -399,7 +402,7 @@ const searchHistory = {
         return history ? JSON.parse(history) : [];
     },
     
-    // Agregar bÃºsqueda al historial
+    // Agregar búsqueda al historial
     addToHistory: (query) => {
         if (!query || query.length < 2) return;
         
@@ -415,13 +418,13 @@ const searchHistory = {
             count: 1
         });
         
-        // Mantener tamaÃ±o mÃ¡ximo
+        // Mantener tamaño máximo
         history = history.slice(0, searchHistory.maxHistorySize);
         
         localStorage.setItem('plantamedicinal_search_history', JSON.stringify(history));
     },
     
-    // Obtener bÃºsquedas recientes
+    // Obtener búsquedas recientes
     getRecentSearches: () => {
         return searchHistory.getHistory().slice(0, 5);
     }
@@ -458,15 +461,15 @@ const advancedFilters = {
                 
                 <div class="grid md:grid-cols-2 gap-6">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">CategorÃ­a</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Categoría</label>
                         <select id="filterCategoria" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-                            <option value="">Todas las categorÃ­as</option>
+                            <option value="">Todas las categorías</option>
                             ${searchConfig.categories.map(cat => `<option value="${cat}">${cat}</option>`).join('')}
                         </select>
                     </div>
                     
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Rating mÃ­nimo</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Rating mínimo</label>
                         <select id="filterRating" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
                             <option value="">Cualquier rating</option>
                             <option value="4">4+ estrellas</option>
@@ -476,8 +479,8 @@ const advancedFilters = {
                     </div>
                     
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">RegiÃ³n</label>
-                        <input type="text" id="filterRegion" placeholder="Ej: AmÃ©rica del Sur" 
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Región</label>
+                        <input type="text" id="filterRegion" placeholder="Ej: América del Sur" 
                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">
                     </div>
                     
@@ -486,7 +489,7 @@ const advancedFilters = {
                         <select id="filterOrden" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
                             <option value="relevancia">Relevancia</option>
                             <option value="nombre">Nombre A-Z</option>
-                            <option value="rating">Rating mÃ¡s alto</option>
+                            <option value="rating">Rating más alto</option>
                             <option value="popularidad">Popularidad</option>
                         </select>
                     </div>
@@ -541,7 +544,7 @@ const advancedFilters = {
             orden: document.getElementById('filterOrden')?.value
         };
         
-        // Aplicar filtros a la bÃºsqueda actual
+        // Aplicar filtros a la búsqueda actual
         const searchInput = document.getElementById('searchInput');
         if (searchInput && searchInput.value) {
             const query = searchInput.value;
@@ -576,7 +579,7 @@ window.showAdvancedFilters = () => {
     advancedFilters.show();
 };
 
-// ExtensiÃ³n del sistema de bÃºsqueda principal
+// Extensión del sistema de búsqueda principal
 searchSystem.performSearch = () => {
     const searchInput = document.getElementById('searchInput');
     const resultsContainer = document.getElementById('searchResults');
@@ -594,7 +597,7 @@ searchSystem.performSearch = () => {
     // Agregar al historial
     searchHistory.addToHistory(query);
     
-    // Realizar bÃºsqueda
+    // Realizar búsqueda
     const results = searchEngine.search(query);
     searchSystem.displayResults(results);
     
@@ -602,12 +605,12 @@ searchSystem.performSearch = () => {
     suggestionSystem.hideSuggestions();
 };
 
-// InicializaciÃ³n del sistema de bÃºsqueda
+// Inicialización del sistema de búsqueda
 document.addEventListener('DOMContentLoaded', () => {
-    // Inicializar Ã­ndice de bÃºsqueda
+    // Inicializar índice de búsqueda
     searchIndex.init();
     
-    // Configurar eventos de bÃºsqueda
+    // Configurar eventos de búsqueda
     const searchInput = document.getElementById('searchInput');
     if (searchInput) {
         // Sugerencias en tiempo real
@@ -643,7 +646,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
-    console.log('ðŸ” Sistema de bÃºsqueda avanzada inicializado');
+    console.log('ðŸ” Sistema de búsqueda avanzada inicializado');
 });
+
+
+
+
+
+
+
+
+
+
+
+
 
 

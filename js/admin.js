@@ -115,7 +115,7 @@ const adminManager = {
         adminManager.setupEventListeners();
         adminManager.startAutoRefresh();
         
-        console.log('⚙️ Panel de administración inicializado');
+        console.log('⚙ Panel de administración inicializado');
     },
 
     // Verificar permisos de administrador
@@ -429,7 +429,7 @@ const adminManager = {
     approveItem: (itemId) => {
         adminManager.showConfirm(
             'Aprobar Elemento',
-            '¿Estás seguro de que quieres aprobar este elemento?',
+            'Estás seguro de que quieres aprobar este elemento?',
             () => {
                 // Simular aprobación
                 utils.showNotification('Elemento aprobado correctamente', 'success');
@@ -442,7 +442,7 @@ const adminManager = {
     rejectItem: (itemId) => {
         adminManager.showConfirm(
             'Rechazar Elemento',
-            '¿Estás seguro de que quieres rechazar este elemento?',
+            'Estás seguro de que quieres rechazar este elemento?',
             () => {
                 // Simular rechazo
                 utils.showNotification('Elemento rechazado', 'info');
@@ -538,7 +538,7 @@ const adminManager = {
 
         adminManager.showConfirm(
             'Suspender Usuario',
-            `¿Estás seguro de que quieres suspender a ${user.nombre} ${user.apellido}?`,
+            `Estás seguro de que quieres suspender a ${user.nombre} ${user.apellido}?`,
             () => {
                 user.activo = false;
                 utils.showNotification('Usuario suspendido', 'warning');
@@ -614,7 +614,7 @@ const adminManager = {
         
         adminManager.showConfirm(
             'Resolver Reporte',
-            `¿Estás seguro de que quieres ${actionText}?`,
+            `Estás seguro de que quieres ${actionText}?`,
             () => {
                 const message = action === 'valid' ? 'Contenido eliminado por violación' : 'Reporte marcado como inválido';
                 utils.showNotification(message, action === 'valid' ? 'warning' : 'success');
@@ -700,6 +700,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Verificar si estamos en el panel de admin
     if (window.location.pathname.includes('admin.html') || document.getElementById('adminNav')) {
         adminManager.init();
-        console.log('⚙️ Panel de administración cargado correctamente');
+        console.log('⚙ Panel de administración cargado correctamente');
     }
 });

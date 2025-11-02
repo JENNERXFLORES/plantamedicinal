@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -60,13 +60,24 @@
                     <a href="#" onclick="showAdvancedFilters()" class="nav-link text-gray-700 hover:text-verde-medicina transition-colors duration-200 font-medium">Búsqueda</a>
                 </div>
 
-                <!-- Botones de autenticación (se actualizan dinámicamente) -->
+                <!-- Botones de autenticaci�n (se actualizan dinámicamente) -->
                 <div class="hidden md:flex items-center space-x-4" id="authButtons">
-                    <button onclick="mostrarLogin()" class="px-4 py-2 text-verde-medicina border border-verde-medicina rounded-lg hover:bg-verde-medicina hover:text-white transition-all duration-200 font-medium">
+                    <button id="loginBtn" onclick="mostrarLogin()" class="px-4 py-2 text-verde-medicina border border-verde-medicina rounded-lg hover:bg-verde-medicina hover:text-white transition-all duration-200 font-medium">
                         <i class="fas fa-sign-in-alt mr-2"></i>Iniciar Sesión
                     </button>
-                    <button onclick="mostrarRegistro()" class="px-4 py-2 bg-verde-medicina text-white rounded-lg hover:bg-green-700 transition-all duration-200 font-medium">
+                    <button id="registerBtn" onclick="mostrarRegistro()" class="px-4 py-2 bg-verde-medicina text-white rounded-lg hover:bg-green-700 transition-all duration-200 font-medium">
                         <i class="fas fa-user-plus mr-2"></i>Registrarse
+                    </button>
+                </div>
+
+                <!-- Menú de usuario (autenticado) -->
+                <div id="userMenu" class="hidden md:flex items-center space-x-4">
+                    <span id="userName" class="text-gray-700 font-medium"></span>
+                    <a href="admin.html" id="adminLink" class="admin-only px-4 py-2 text-verde-medicina border border-verde-medicina rounded-lg hover:bg-verde-medicina hover:text-white transition-all duration-200 font-medium" style="display:none;">
+                        <i class="fas fa-cog mr-2"></i>Admin
+                    </a>
+                    <button id="logoutBtn" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all duration-200 font-medium">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Salir
                     </button>
                 </div>
 
@@ -186,7 +197,7 @@
             <div id="recetasNoResults" class="hidden text-center py-12">
                 <i class="fas fa-mortar-pestle text-6xl text-gray-300 mb-4"></i>
                 <h3 class="text-xl font-semibold text-gray-600 mb-2">No se encontraron recetas</h3>
-                <p class="text-gray-500">Intenta ajustar los filtros de búsqueda o sé el primero en compartir una receta.</p>
+                <p class="text-gray-500">Intenta ajustar los filtros de Búsqueda o sé el primero en compartir una receta.</p>
                 <button onclick="mostrarFormularioReceta()" 
                         class="mt-4 px-6 py-3 bg-verde-medicina text-white rounded-lg hover:bg-green-700 transition-colors">
                     <i class="fas fa-plus mr-2"></i>Compartir Primera Receta
@@ -283,9 +294,9 @@
                     </div>
 
                     <div class="flex items-start">
-                        <input type="checkbox" id="recetaTerminos" required class="mt-1 mr-2">
-                        <label for="recetaTerminos" class="text-sm text-gray-600">
-                            Confirmo que esta receta es de conocimiento tradicional y/o experiencia personal, 
+                        <input type="checkbox" id="recetaT?rminos" required class="mt-1 mr-2">
+                        <label for="recetaT?rminos" class="text-sm text-gray-600">
+                            Confirmo que esta receta es de conocimiento tradici?nal y/o experiencia personal, 
                             y acepto que sea revisada antes de su publicación.*
                         </label>
                     </div>
@@ -316,12 +327,12 @@
             <form id="loginForm" class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Correo Electrónico</label>
-                    <input type="email" id="loginEmail" required 
+                    <input type="email" id="loginEmail" name="email" required 
                            class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Contraseña</label>
-                    <input type="password" id="loginPassword" required 
+                    <input type="password" id="loginPassword" name="password" required 
                            class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
                 </div>
                 <button type="submit" class="w-full py-3 bg-verde-medicina text-white rounded-lg hover:bg-green-700 transition-colors font-semibold">
@@ -346,35 +357,35 @@
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Nombre</label>
-                        <input type="text" id="registerName" required 
+                        <input type="text" id="registerName" name="nombre" required 
                                class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Apellido</label>
-                        <input type="text" id="registerLastName" required 
+                        <input type="text" id="registerLastName" name="apellido" required 
                                class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
                     </div>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Correo Electrónico</label>
-                    <input type="email" id="registerEmail" required 
+                    <input type="email" id="registerEmail" name="email" required 
                            class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Usuario</label>
-                    <select id="registerRole" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
+                    <select id="registerRole" name="rol" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
                         <option value="usuario">Usuario General</option>
                         <option value="proveedor">Proveedor/Comunidad Indígena</option>
                     </select>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Contraseña</label>
-                    <input type="password" id="registerPassword" required 
+                    <input type="password" id="registerPassword" name="password" required 
                            class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Confirmar Contraseña</label>
-                    <input type="password" id="registerConfirmPassword" required 
+                    <input type="password" id="registerConfirmPassword" name="confirmPassword" required 
                            class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
                 </div>
                 <button type="submit" class="w-full py-3 bg-verde-medicina text-white rounded-lg hover:bg-green-700 transition-colors font-semibold">
@@ -424,23 +435,26 @@
                     <h4 class="font-semibold text-lg mb-4">Contacto</h4>
                     <div class="space-y-2 text-gray-300">
                         <p><i class="fas fa-envelope mr-2"></i>info@plantamedicinal.org</p>
-                        <p><i class="fas fa-phone mr-2"></i>+57 1 234 5678</p>
+                        <p><i class="fas fa-phone mr-2"></i>+51 926 213 182</p>
                     </div>
                 </div>
             </div>
             
             <div class="border-t border-green-600 mt-8 pt-8 text-center text-gray-300">
-                <p>&copy; 2024 PlantaMedicinal. Todos los derechos reservados.</p>
+                <p>&copy; 2025 PlantaMedicinal. Todos los derechos reservados.</p>
             </div>
         </div>
     </footer>
 
     <!-- Scripts JavaScript -->
-    <script src="js/api-config.js" onload="console.log('Loaded js/api-config.js')" onerror="console.error('Error loading js/api-config.js', event)"></script>
-    <script src="js/auth-migrated.js" onload="console.log('Loaded js/auth-migrated.js')" onerror="console.error('Error loading js/auth-migrated.js', event)"></script>
+    <script charset="utf-8" src="js/api-config.js" onload="console.log('Loaded js/api-config.js')" onerror="console.error('Error loading js/api-config.js', event)"></script>
+    <script charset="utf-8" src="js/auth-migrated.js" onload="console.log('Loaded js/auth-migrated.js')" onerror="console.error('Error loading js/auth-migrated.js', event)"></script>
     <script src="js/migration-adapter.js" onload="console.log('Loaded js/migration-adapter.js')" onerror="console.error('Error loading js/migration-adapter.js', event)"></script>
     <script src="js/main.js" onload="console.log('Loaded js/main.js')" onerror="console.error('Error loading js/main.js', event)"></script>
     <script src="js/search.js" onload="console.log('Loaded js/search.js')" onerror="console.error('Error loading js/search.js', event)"></script>
     <script src="js/recetas.js" onload="console.log('Loaded js/recetas.js')" onerror="console.error('Error loading js/recetas.js', event)"></script>
   </body>
 </html>
+
+
+

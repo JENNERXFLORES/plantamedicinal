@@ -115,3 +115,21 @@
                 ORDER BY r.created_at DESC
                 LIMIT 50 OFFSET 0
 [22-Oct-2025 03:03:52 Europe/Berlin] Error en RecetasAPI: Error en la consulta a la base de datos
+[31-Oct-2025 19:24:09 Europe/Berlin] Error en consulta SQL: SQLSTATE[HY093]: Invalid parameter number: mixed named and positional parameters | SQL: UPDATE usuarios SET fecha_ultimo_acceso = :fecha_ultimo_acceso WHERE id = ?
+[31-Oct-2025 19:24:09 Europe/Berlin] Error en AuthAPI: Error en la consulta a la base de datos
+[31-Oct-2025 19:24:09 Europe/Berlin] Error en consulta SQL: SQLSTATE[HY093]: Invalid parameter number: mixed named and positional parameters | SQL: UPDATE usuarios SET fecha_ultimo_acceso = :fecha_ultimo_acceso WHERE id = ?
+[31-Oct-2025 19:24:09 Europe/Berlin] Error en AuthAPI: Error en la consulta a la base de datos
+[31-Oct-2025 19:57:25 Europe/Berlin] Error en consulta SQL: SQLSTATE[HY093]: Invalid parameter number: mixed named and positional parameters | SQL: UPDATE usuarios SET fecha_ultimo_acceso = :fecha_ultimo_acceso WHERE id = ?
+[31-Oct-2025 19:57:25 Europe/Berlin] Error en AuthAPI: Error en la consulta a la base de datos
+[31-Oct-2025 19:57:25 Europe/Berlin] Error en consulta SQL: SQLSTATE[HY093]: Invalid parameter number: mixed named and positional parameters | SQL: UPDATE usuarios SET fecha_ultimo_acceso = :fecha_ultimo_acceso WHERE id = ?
+[31-Oct-2025 19:57:25 Europe/Berlin] Error en AuthAPI: Error en la consulta a la base de datos
+[31-Oct-2025 19:58:03 Europe/Berlin] Error en consulta SQL: SQLSTATE[HY093]: Invalid parameter number: mixed named and positional parameters | SQL: UPDATE usuarios SET fecha_ultimo_acceso = :fecha_ultimo_acceso WHERE id = ?
+[31-Oct-2025 19:58:03 Europe/Berlin] Error en AuthAPI: Error en la consulta a la base de datos
+[31-Oct-2025 19:58:03 Europe/Berlin] Error en consulta SQL: SQLSTATE[HY093]: Invalid parameter number: mixed named and positional parameters | SQL: UPDATE usuarios SET fecha_ultimo_acceso = :fecha_ultimo_acceso WHERE id = ?
+[31-Oct-2025 19:58:03 Europe/Berlin] Error en AuthAPI: Error en la consulta a la base de datos
+[31-Oct-2025 19:58:41 Europe/Berlin] Error en consulta SQL: SQLSTATE[HY093]: Invalid parameter number: mixed named and positional parameters | SQL: UPDATE usuarios SET fecha_ultimo_acceso = :fecha_ultimo_acceso WHERE id = ?
+[31-Oct-2025 19:58:41 Europe/Berlin] Error en AuthAPI: Error en la consulta a la base de datos
+[31-Oct-2025 19:58:41 Europe/Berlin] Error en consulta SQL: SQLSTATE[HY093]: Invalid parameter number: mixed named and positional parameters | SQL: UPDATE usuarios SET fecha_ultimo_acceso = :fecha_ultimo_acceso WHERE id = ?
+[31-Oct-2025 19:58:41 Europe/Berlin] Error en AuthAPI: Error en la consulta a la base de datos
+[31-Oct-2025 20:22:28 Europe/Berlin] Error en consulta SQL: SQLSTATE[HY093]: Invalid parameter number: mixed named and positional parameters | SQL: UPDATE sesiones SET activa = :activa WHERE token = ?
+[31-Oct-2025 20:22:28 Europe/Berlin] Error en AuthAPI: Error en la consulta a la base de datos

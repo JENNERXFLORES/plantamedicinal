@@ -162,7 +162,7 @@ const comunidadDatabase = {
             fecha_creacion: new Date('2024-03-10'),
             respuestas: 12,
             ultimo_mensaje: new Date('2024-03-11T14:30:00'),
-            contenido: "¿Cuáles son los criterios más importantes para determinar la dosificación adecuada de preparaciones con plantas medicinales?",
+            contenido: "Cuáles son los criterios más importantes para determinar la dosificación adecuada de preparaciones con plantas medicinales?",
             etiquetas: ["dosificación", "seguridad", "preparaciones"],
             fijado: true,
             activo: true
@@ -175,7 +175,7 @@ const comunidadDatabase = {
             fecha_creacion: new Date('2024-03-09'),
             respuestas: 8,
             ultimo_mensaje: new Date('2024-03-11T10:15:00'),
-            contenido: "Propongo crear una red de intercambio de semillas entre miembros de la comunidad. ¿Quién está interesado?",
+            contenido: "Propongo crear una red de intercambio de semillas entre miembros de la comunidad. Quién está interesado?",
             etiquetas: ["semillas", "intercambio", "cultivo"],
             fijado: false,
             activo: true
@@ -260,7 +260,7 @@ const comunidadManager = {
         comunidadManager.setupEventListeners();
         comunidadManager.showTab('comunidades');
         
-        console.log('👥 Sistema de comunidad inicializado');
+        console.log(' Sistema de comunidad inicializado');
     },
 
     // Cargar datos iniciales
@@ -808,6 +808,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Verificar si estamos en la página de comunidad
     if (window.location.pathname.includes('comunidad.html') || document.getElementById('comunidadesContainer')) {
         comunidadManager.init();
-        console.log('👥 Página de comunidad inicializada correctamente');
+        console.log(' Página de comunidad inicializada correctamente');
     }
 });

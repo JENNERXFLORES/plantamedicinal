@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Estilos personalizados -->
+    <!-- estálos personalizados -->
     <link rel="stylesheet" href="css/style.css">
     
     <!-- Tailwind Config personalizado -->
@@ -35,7 +35,7 @@
 </head>
 <body class="font-inter bg-gradient-to-br from-green-50 to-emerald-100 min-h-screen">
     
-    <!-- Header con navegación -->
+    <!-- Header con Navegación -->
     <nav class="bg-white shadow-lg sticky top-0 z-50" id="mainNav">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
@@ -46,7 +46,7 @@
                     </div>
                     <div>
                         <a href="index.html" class="font-poppins font-bold text-xl text-verde-medicina hover:text-green-700">PlantaMedicinal</a>
-                        <p class="text-xs text-gray-600 hidden sm:block">Conservación del Conocimiento Ancestral</p>
+                        <p class="text-xs text-gray-600 hidden sm:block">Conservación del Conocimiento ancestral</p>
                     </div>
                 </div>
 
@@ -57,27 +57,37 @@
                     <a href="recetas.html" class="nav-link text-gray-700 hover:text-verde-medicina transition-colors duration-200 font-medium">Recetas</a>
                     <a href="comunidad.html" class="nav-link text-verde-medicina border-b-2 border-verde-medicina font-medium">Comunidad</a>
                 </div>
-
-                <!-- Botones de autenticación (se actualizan dinámicamente) -->
+                <!-- Botones de autenticaciï¿½n (se actualizan dinámicamente) -->
                 <div class="hidden md:flex items-center space-x-4" id="authButtons">
-                    <button onclick="mostrarLogin()" class="px-4 py-2 text-verde-medicina border border-verde-medicina rounded-lg hover:bg-verde-medicina hover:text-white transition-all duration-200 font-medium">
+                    <button id="loginBtn" onclick="mostrarLogin()" class="px-4 py-2 text-verde-medicina border border-verde-medicina rounded-lg hover:bg-verde-medicina hover:text-white transition-all duration-200 font-medium">
                         <i class="fas fa-sign-in-alt mr-2"></i>Iniciar Sesión
                     </button>
-                    <button onclick="mostrarRegistro()" class="px-4 py-2 bg-verde-medicina text-white rounded-lg hover:bg-green-700 transition-all duration-200 font-medium">
+                    <button id="registerBtn" onclick="mostrarRegistro()" class="px-4 py-2 bg-verde-medicina text-white rounded-lg hover:bg-green-700 transition-all duration-200 font-medium">
                         <i class="fas fa-user-plus mr-2"></i>Registrarse
                     </button>
                 </div>
 
-                <!-- Menú móvil -->
+                <!-- Menú¿½ de usuario (autenticado) -->
+                <div id="userMenú" class="hidden md:flex items-center space-x-4">
+                    <span id="userName" class="text-gray-700 font-medium"></span>
+                    <a href="admin.html" id="adminLink" class="admin-only px-4 py-2 text-verde-medicina border border-verde-medicina rounded-lg hover:bg-verde-medicina hover:text-white transition-all duration-200 font-medium" style="display:none;">
+                        <i class="fas fa-cog mr-2"></i>Admin
+                    </a>
+                    <button id="logoutBtn" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all duration-200 font-medium">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Salir
+                    </button>
+                </div>
+
+                <!-- Menúº móvil -->
                 <div class="md:hidden">
-                    <button onclick="toggleMobileMenu()" class="text-gray-700 hover:text-verde-medicina">
+                    <button onclick="toggleMobileMenú()" class="text-gray-700 hover:text-verde-medicina">
                         <i class="fas fa-bars text-xl"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- Menú móvil desplegable -->
-            <div id="mobileMenu" class="md:hidden hidden bg-white border-t">
+            <!-- Menúº móvil desplegable -->
+            <div id="mobileMenú" class="md:hidden hidden bg-white border-t">
                 <div class="px-2 pt-2 pb-3 space-y-1">
                     <a href="index.html" class="block px-3 py-2 text-gray-700 hover:text-verde-medicina">Inicio</a>
                     <a href="plantas.html" class="block px-3 py-2 text-gray-700 hover:text-verde-medicina">Plantas</a>
@@ -91,9 +101,9 @@
     <!-- Hero Section de comunidad -->
     <section class="relative bg-gradient-to-r from-green-600 to-emerald-600 text-white py-16">
         <div class="absolute inset-0 opacity-20">
-            <div class="floating-leaf absolute top-10 left-10 w-8 h-8">🌿</div>
-            <div class="floating-leaf absolute top-20 right-20 w-6 h-6" style="animation-delay: -1s;">🍃</div>
-            <div class="floating-leaf absolute bottom-10 left-1/4 w-10 h-10" style="animation-delay: -2s;">🌱</div>
+            <div class="floating-leaf absolute top-10 left-10 w-8 h-8"><i class="fas fa-leaf text-white/70"></i></div>
+            <div class="floating-leaf absolute top-20 right-20 w-6 h-6" style="animation-delay: -1s;"><i class="fas fa-leaf text-white/70"></i></div>
+            <div class="floating-leaf absolute bottom-10 left-1/4 w-10 h-10" style="animation-delay: -2s;"><i class="fas fa-leaf text-white/70"></i></div>
         </div>
         
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -109,7 +119,7 @@
         </div>
     </section>
 
-    <!-- Estadísticas de la comunidad -->
+    <!-- estádísticas de la comunidad -->
     <section class="py-12 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
@@ -137,7 +147,7 @@
     <main class="py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            <!-- Tabs de navegación -->
+            <!-- Tabs de Navegación -->
             <div class="bg-white rounded-xl shadow-sm mb-8">
                 <div class="flex flex-wrap border-b border-gray-200">
                     <button onclick="showCommunityTab('comunidades')" 
@@ -146,11 +156,11 @@
                     </button>
                     <button onclick="showCommunityTab('miembros')" 
                             class="community-tab px-6 py-4 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent">
-                        <i class="fas fa-user-friends mr-2"></i>Miembros Destacados
+                        <i class="fas fa-user-friends mr-2"></i>Miembros Destácados
                     </button>
                     <button onclick="showCommunityTab('foro')" 
                             class="community-tab px-6 py-4 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent">
-                        <i class="fas fa-comments mr-2"></i>Foro de Discusión
+                        <i class="fas fa-comMenús mr-2"></i>Foro de Discusión
                     </button>
                     <button onclick="showCommunityTab('eventos')" 
                             class="community-tab px-6 py-4 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent">
@@ -165,7 +175,7 @@
                     <h2 class="text-2xl font-bold text-gray-900 mb-4">Comunidades Indígenas Colaboradoras</h2>
                     <p class="text-gray-600 mb-6">
                         Conoce a las comunidades que generosamente comparten su sabiduría ancestral 
-                        y establecen conexiones directas para el intercambio cultural.
+                        y estáblecen conexiones directas para el intercambio cultural.
                     </p>
                 </div>
 
@@ -174,13 +184,13 @@
                 </div>
             </section>
 
-            <!-- Sección Miembros Destacados -->
+            <!-- Sección Miembros Destácados -->
             <section id="miembros-tab" class="community-section hidden">
                 <div class="mb-8">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-4">Miembros Destacados</h2>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">Miembros Destácados</h2>
                     <p class="text-gray-600 mb-6">
-                        Investigadores, herbolarios y entusiastas que contribuyen activamente 
-                        al crecimiento de nuestra comunidad.
+                        investigadores, herbolarios y entusiastas que contribuyen activamente 
+                        al crecimiento de nuestáa comunidad.
                     </p>
                 </div>
 
@@ -194,7 +204,7 @@
                 <div class="mb-8 flex justify-between items-center">
                     <div>
                         <h2 class="text-2xl font-bold text-gray-900 mb-2">Foro de Discusión</h2>
-                        <p class="text-gray-600">Participa en conversaciones sobre plantas medicinales y conocimiento tradicional</p>
+                        <p class="text-gray-600">Participa en conversaciones sobre plantas medicinales y conocimiento tradici?nal</p>
                     </div>
                     <button onclick="mostrarNuevoTema()" 
                             class="px-6 py-3 bg-verde-medicina text-white rounded-lg hover:bg-green-700 transition-colors">
@@ -209,7 +219,7 @@
                             <option value="">Todas las categorías</option>
                             <option value="consultas">Consultas Generales</option>
                             <option value="recetas">Discusión de Recetas</option>
-                            <option value="investigacion">Investigación Científica</option>
+                            <option value="investigación">Investigación Científica</option>
                             <option value="intercambio">Intercambio Cultural</option>
                         </select>
                         <div class="flex-1"></div>
@@ -228,7 +238,7 @@
                     <h2 class="text-2xl font-bold text-gray-900 mb-4">Eventos y Talleres</h2>
                     <p class="text-gray-600 mb-6">
                         Participa en talleres, conferencias y encuentros virtuales con expertos 
-                        en medicina tradicional y plantas medicinales.
+                        en medicina tradici?nal y plantas medicinales.
                     </p>
                 </div>
 
@@ -273,8 +283,8 @@
 
             <form id="nuevoTemaForm" class="space-y-6">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Título del tema*</label>
-                    <input type="text" id="temaTitulo" required 
+                    <label class="block text-sm font-medium text-gray-700 mb-2">título del tema*</label>
+                    <input type="text" id="tematítulo" required 
                            placeholder="Escribe un título descriptivo para tu tema"
                            class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
                 </div>
@@ -285,7 +295,7 @@
                         <option value="">Seleccionar categoría...</option>
                         <option value="consultas">Consultas Generales</option>
                         <option value="recetas">Discusión de Recetas</option>
-                        <option value="investigacion">Investigación Científica</option>
+                        <option value="investigación">Investigación Científica</option>
                         <option value="intercambio">Intercambio Cultural</option>
                     </select>
                 </div>
@@ -302,7 +312,7 @@
                         <i class="fas fa-info-circle text-blue-500 mr-2 mt-1"></i>
                         <div class="text-sm text-gray-700">
                             <p class="font-medium mb-1">Normas de la comunidad</p>
-                            <p>Mantén un tono respetuoso, comparte información verificada y respeta el conocimiento tradicional de las comunidades.</p>
+                            <p>Mantén un tono respetuoso, comparte información verificada y respeta el conocimiento tradici?nal de las comunidades.</p>
                         </div>
                     </div>
                 </div>
@@ -332,12 +342,12 @@
             <form id="loginForm" class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Correo Electrónico</label>
-                    <input type="email" id="loginEmail" required 
+                    <input type="email" id="loginEmail" name="email" required 
                            class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Contraseña</label>
-                    <input type="password" id="loginPassword" required 
+                    <input type="password" id="loginPassword" name="password" required 
                            class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
                 </div>
                 <button type="submit" class="w-full py-3 bg-verde-medicina text-white rounded-lg hover:bg-green-700 transition-colors font-semibold">
@@ -418,7 +428,7 @@
                     <ul class="space-y-2 text-gray-300">
                         <li><a href="plantas.html" class="hover:text-dorado transition-colors">Plantas Medicinales</a></li>
                         <li><a href="recetas.html" class="hover:text-dorado transition-colors">Recetas Tradicionales</a></li>
-                        <li><a href="#" class="hover:text-dorado transition-colors">Investigaciones</a></li>
+                        <li><a href="#" class="hover:text-dorado transition-colors">Investágaciones</a></li>
                     </ul>
                 </div>
                 
@@ -426,22 +436,23 @@
                     <h4 class="font-semibold text-lg mb-4">Contacto</h4>
                     <div class="space-y-2 text-gray-300">
                         <p><i class="fas fa-envelope mr-2"></i>comunidad@plantamedicinal.org</p>
-                        <p><i class="fas fa-phone mr-2"></i>+57 1 234 5678</p>
+                        <p><i class="fas fa-phone mr-2"></i>+51 926 213 182</p>
                     </div>
                 </div>
             </div>
             
             <div class="border-t border-green-600 mt-8 pt-8 text-center text-gray-300">
-                <p>&copy; 2024 PlantaMedicinal. Preservando el conocimiento ancestral con respeto y colaboración.</p>
+                <p>&copy; 2025 PlantaMedicinal. Preservando el conocimiento ancestral con respeto y colaboración.</p>
             </div>
         </div>
     </footer>
 
     <!-- Scripts JavaScript -->
-    <script src="js/api-config.js"></script>
-    <script src="js/auth-migrated.js"></script>
+    <script charset="utf-8" src="js/api-config.js"></script>
+    <script charset="utf-8" src="js/auth-migrated.js"></script>
     <script src="js/migration-adapter.js"></script>
     <script src="js/main.js"></script>
     <script src="js/comunidad.js"></script>
 </body>
 </html>
+

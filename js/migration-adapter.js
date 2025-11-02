@@ -1,9 +1,9 @@
-﻿// Adaptador para migrar el frontend existente a usar las nuevas APIs MySQL
+// Adaptador para migrar el frontend existente a usar las nuevas APIs MySQL
 // Reemplaza las funciones de datos simulados por llamadas a APIs reales
 
 console.log('Loading Migration Adapter...');
 
-// Variables globales para compatibilidad con el cÃ³digo existente
+// Variables globales para compatibilidad con el código existente
 let currentUser = null;
 let authToken = null;
 
@@ -18,7 +18,7 @@ if (window.dataManager) {
 
 // Adaptador para compatibilidad con el sistema existente
 window.apiAdapter = {
-    // Migrar funciÃ³n de login existente
+    // Migrar función de login existente
     async login(email, password, remember = false) {
         try {
             const response = await apiClient.post(apiConfig.endpoints.auth.login, {
@@ -50,7 +50,7 @@ window.apiAdapter = {
         }
     },
 
-    // Migrar funciÃ³n de registro
+    // Migrar función de registro
     async register(userData) {
         try {
             const response = await apiClient.post(apiConfig.endpoints.auth.register, userData);
@@ -64,7 +64,7 @@ window.apiAdapter = {
         }
     },
 
-    // Migrar funciÃ³n de logout
+    // Migrar función de logout
     async logout() {
         try {
             await apiClient.post(apiConfig.endpoints.auth.logout);
@@ -85,7 +85,7 @@ window.apiAdapter = {
         }
     },
 
-    // Migrar obtenciÃ³n de plantas
+    // Migrar obtención de plantas
     async getPlantas(page = 1, limit = 10, filters = {}) {
         try {
             const params = { page, limit, ...filters };
@@ -102,7 +102,7 @@ window.apiAdapter = {
         }
     },
 
-    // Migrar bÃºsqueda de plantas
+    // Migrar búsqueda de plantas
     async searchPlantas(searchTerm, filters = {}) {
         try {
             const params = { search: searchTerm, ...filters };
@@ -118,7 +118,7 @@ window.apiAdapter = {
         }
     },
 
-    // Migrar obtenciÃ³n de recetas
+    // Migrar obtención de recetas
     async getRecetas(page = 1, limit = 10, filters = {}) {
         try {
             const params = { page, limit, ...filters };
@@ -135,7 +135,7 @@ window.apiAdapter = {
         }
     },
 
-    // Migrar creaciÃ³n de recetas
+    // Migrar creación de recetas
     async createReceta(recetaData) {
         try {
             const response = await apiClient.post(apiConfig.endpoints.recetas.create, recetaData);
@@ -193,7 +193,7 @@ window.apiAdapter = {
         }
     },
 
-    // Verificar estado de autenticaciÃ³n
+    // Verificar estado de autenticación
     async checkAuth() {
         try {
             // Evitar llamada al servidor si no hay token
@@ -219,7 +219,7 @@ window.apiAdapter = {
         }
     },
 
-    // Obtener estadÃ­sticas para dashboard admin
+    // Obtener estadísticas para dashboard admin
     async getDashboardStats() {
         try {
             const response = await apiClient.get(apiConfig.endpoints.admin.dashboard);
@@ -243,7 +243,7 @@ window.apiAdapter = {
         return authToken;
     },
 
-    // Verificar si estÃ¡ autenticado
+    // Verificar si está autenticado
     isAuthenticated() {
         return !!currentUser && !!authToken;
     }
@@ -345,12 +345,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 const result = await window.apiAdapter.login(email, password);
                 
                 if (result.success) {
-                    // Trigger evento personalizado para que el cÃ³digo existente lo detecte
+                    // Trigger evento personalizado para que el código existente lo detecte
                     window.dispatchEvent(new CustomEvent('loginSuccess', { 
                         detail: result 
                     }));
                     
-                    // Mostrar mensaje de Ã©xito
+                    // Mostrar mensaje de éxito
                     if (window.responseUtils) {
                         window.responseUtils.showSuccess(result.message);
                     }
@@ -366,7 +366,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Verificar autenticaciÃ³n al cargar
+    // Verificar autenticación al cargar
     window.apiAdapter.checkAuth().then(result => {
         if (result.success) {
             console.log('User authenticated via API:', result.user.email);

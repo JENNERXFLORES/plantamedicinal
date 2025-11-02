@@ -92,8 +92,10 @@ class AuthAPI {
             return $this->sendError('Email y contraseña son requeridos', 400);
         }
         
-        $email = trim($input['email']);
-        $password = $input['password'];
+        // Normalizar email y password
+        $rawEmail = (string)$input['email'];
+        $email = mb_strtolower(trim(preg_replace('/\s+/u', '', $rawEmail)));
+        $password = (string)$input['password'];
         
         // Validar formato de email
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -102,7 +104,7 @@ class AuthAPI {
         
         // Buscar usuario en la base de datos
         $user = $this->db->fetch(
-            "SELECT * FROM usuarios WHERE email = ? AND activo = TRUE",
+            "SELECT * FROM usuarios WHERE LOWER(email) = ? AND activo = 1",
             [$email]
         );
         
@@ -118,9 +120,9 @@ class AuthAPI {
         // Actualizar último acceso
         $this->db->update(
             'usuarios',
-            ['ultimo_acceso' => date('Y-m-d H:i:s')],
-            'id = ?',
-            [$user['id']]
+            ['fecha_ultimo_acceso' => date('Y-m-d H:i:s')],
+            'id = :id',
+            ['id' => $user['id']]
         );
         
         // Crear sesión
@@ -454,7 +456,7 @@ class AuthAPI {
 
         try {
             // Actualizar datos
-            $this->db->update('usuarios', $updateData, 'id = ?', [$user['id']]);
+            $this->db->update('usuarios', $updateData, 'id = :id', ['id' => $user['id']]);
 
             // Obtener datos actualizados
             $updatedUser = $this->db->fetch(
@@ -589,3 +591,5 @@ class AuthAPI {
 $api = new AuthAPI();
 $api->handleRequest();
 ?>
+
+

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -10,10 +10,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Estilos personalizados -->
+    <!-- estálos personalizados -->
     <link rel="stylesheet" href="css/style.css">
     
-    <!-- Chart.js para estadísticas -->
+    <!-- Chart.js para estádísticas -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <!-- Tailwind Config personalizado -->
@@ -38,7 +38,7 @@
 </head>
 <body class="font-inter bg-gradient-to-br from-green-50 to-emerald-100 min-h-screen">
     
-    <!-- Header con navegación -->
+    <!-- Header con Navegación -->
     <nav class="bg-white shadow-lg sticky top-0 z-50" id="mainNav">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
@@ -49,7 +49,7 @@
                     </div>
                     <div>
                         <a href="index.html" class="font-poppins font-bold text-xl text-verde-medicina hover:text-green-700">PlantaMedicinal</a>
-                        <p class="text-xs text-gray-600 hidden sm:block">Conservación del Conocimiento Ancestral</p>
+                        <p class="text-xs text-gray-600 hidden sm:block">Conservación del Conocimiento ancestral</p>
                     </div>
                 </div>
 
@@ -64,24 +64,35 @@
 
                 <!-- Botones de autenticación (se actualizan dinámicamente) -->
                 <div class="hidden md:flex items-center space-x-4" id="authButtons">
-                    <button onclick="mostrarLogin()" class="px-4 py-2 text-verde-medicina border border-verde-medicina rounded-lg hover:bg-verde-medicina hover:text-white transition-all duration-200 font-medium">
+                    <button id="loginBtn" onclick="mostrarLogin()" class="px-4 py-2 text-verde-medicina border border-verde-medicina rounded-lg hover:bg-verde-medicina hover:text-white transition-all duration-200 font-medium">
                         <i class="fas fa-sign-in-alt mr-2"></i>Iniciar Sesión
                     </button>
-                    <button onclick="mostrarRegistro()" class="px-4 py-2 bg-verde-medicina text-white rounded-lg hover:bg-green-700 transition-all duration-200 font-medium">
+                    <button id="registerBtn" onclick="mostrarRegistro()" class="px-4 py-2 bg-verde-medicina text-white rounded-lg hover:bg-green-700 transition-all duration-200 font-medium">
                         <i class="fas fa-user-plus mr-2"></i>Registrarse
                     </button>
                 </div>
 
-                <!-- Menú móvil -->
+                <!-- Menúº de usuario (autenticado) -->
+                <div id="userMenú" class="hidden md:flex items-center space-x-4">
+                    <span id="userName" class="text-gray-700 font-medium"></span>
+                    <a href="admin.html" id="adminLink" class="admin-only px-4 py-2 text-verde-medicina border border-verde-medicina rounded-lg hover:bg-verde-medicina hover:text-white transition-all duration-200 font-medium" style="display:none;">
+                        <i class="fas fa-cog mr-2"></i>Admin
+                    </a>
+                    <button id="logoutBtn" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all duration-200 font-medium">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Salir
+                    </button>
+                </div>
+
+                <!-- Menúº móvil -->
                 <div class="md:hidden">
-                    <button onclick="toggleMobileMenu()" class="text-gray-700 hover:text-verde-medicina">
+                    <button onclick="toggleMobileMenú()" class="text-gray-700 hover:text-verde-medicina">
                         <i class="fas fa-bars text-xl"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- Menú móvil desplegable -->
-            <div id="mobileMenu" class="md:hidden hidden bg-white border-t">
+            <!-- Menúº móvil desplegable -->
+            <div id="mobileMenú" class="md:hidden hidden bg-white border-t">
                 <div class="px-2 pt-2 pb-3 space-y-1">
                     <a href="index.html" class="block px-3 py-2 text-gray-700 hover:text-verde-medicina">Inicio</a>
                     <a href="plantas.html" class="block px-3 py-2 text-verde-medicina font-medium">Plantas</a>
@@ -101,7 +112,7 @@
                     Catálogo de <span class="text-dorado">Plantas Medicinales</span>
                 </h1>
                 <p class="text-xl mb-8 opacity-90 max-w-3xl mx-auto">
-                    Explora nuestra base de conocimiento con plantas medicinales nativas, 
+                    Explora nuestáa base de conocimiento con plantas medicinales nativas, 
                     sus propiedades, usos tradicionales y evidencia científica.
                 </p>
             </div>
@@ -124,7 +135,7 @@
                 <div class="flex flex-wrap gap-2">
                     <select id="categoryFilter" class="px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-verde-medicina">
                         <option value="">Todas las categorías</option>
-                        <option value="Digestiva">Digestiva</option>
+                        <option value="Digestáva">Digestáva</option>
                         <option value="Dermatológica">Dermatológica</option>
                         <option value="Inmunológica">Inmunológica</option>
                         <option value="Aromática">Aromática</option>
@@ -145,7 +156,7 @@
                 </div>
             </div>
             
-            <!-- Estadísticas de búsqueda -->
+            <!-- estádísticas de búsqueda -->
             <div class="mt-4 flex justify-between items-center text-sm text-gray-600">
                 <span id="searchStats">Mostrando todas las plantas disponibles</span>
                 <div class="flex items-center space-x-4">
@@ -177,7 +188,7 @@
             
             <!-- Grid/Lista de plantas -->
             <div id="plantasContainer" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Las plantas se cargarán dinámicamente aquí -->
+                <!-- Las plantas se cargarán dinámicamente aquí-->
             </div>
             
             <!-- Loading spinner -->
@@ -186,7 +197,7 @@
                 <p class="text-gray-600">Cargando plantas...</p>
             </div>
             
-            <!-- Mensaje de no resultados -->
+            <!-- Menúaje de no resultados -->
             <div id="noResults" class="hidden text-center py-12">
                 <i class="fas fa-search text-6xl text-gray-300 mb-4"></i>
                 <h3 class="text-xl font-semibold text-gray-600 mb-2">No se encontraron plantas</h3>
@@ -221,18 +232,18 @@
 
             <form id="loginForm" class="space-y-4">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Correo Electrónico</label>
-                    <input type="email" id="loginEmail" required 
-                           class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Correo electrónico</label>
+                    <input type="email" id="loginEmail" name="email" required 
+                            class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Contraseña</label>
-                    <input type="password" id="loginPassword" required 
-                           class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
+                    <input type="password" id="loginPassword" name="password" required 
+                            class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
                 </div>
                 <div class="flex items-center justify-between">
                     <label class="flex items-center">
-                        <input type="checkbox" class="mr-2">
+                        <input type="checkbox" name="remember" class="mr-2">
                         <span class="text-sm text-gray-600">Recordarme</span>
                     </label>
                     <a href="#" class="text-sm text-verde-medicina hover:underline">¿Olvidaste tu contraseña?</a>
@@ -245,7 +256,7 @@
             <div class="mt-6 text-center">
                 <p class="text-sm text-gray-600">
                     ¿No tienes cuenta? 
-                    <button onclick="mostrarRegistro(); cerrarLogin();" class="text-verde-medicina hover:underline font-medium">Regístrate aquí</button>
+                    <button onclick="mostrarRegistro(); cerrarLogin();" class="text-verde-medicina hover:underline font-medium">Regístrate aquí/button>
                 </p>
             </div>
 
@@ -277,7 +288,7 @@
                     </div>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Correo Electrónico</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Correo electrónico</label>
                     <input type="email" id="registerEmail" required 
                            class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-verde-medicina">
                 </div>
@@ -313,7 +324,7 @@
             <div class="mt-6 text-center">
                 <p class="text-sm text-gray-600">
                     ¿Ya tienes cuenta? 
-                    <button onclick="mostrarLogin(); cerrarRegistro();" class="text-verde-medicina hover:underline font-medium">Inicia sesión aquí</button>
+                    <button onclick="mostrarLogin(); cerrarRegistro();" class="text-verde-medicina hover:underline font-medium">Inicia sesión aquí/button>
                 </p>
             </div>
 
@@ -361,14 +372,14 @@
                     <h4 class="font-semibold text-lg mb-4">Contacto</h4>
                     <div class="space-y-2 text-gray-300">
                         <p><i class="fas fa-envelope mr-2"></i>info@plantamedicinal.org</p>
-                        <p><i class="fas fa-phone mr-2"></i>+57 1 234 5678</p>
-                        <p><i class="fas fa-map-marker-alt mr-2"></i>Bogotá, Colombia</p>
+                        <p><i class="fas fa-phone mr-2"></i>+51 926 213 182 </p>
+                        <p><i class="fas fa-map-marker-alt mr-2"></i>Nueva Cajamarca, Perú</p>
                     </div>
                 </div>
             </div>
             
             <div class="border-t border-green-600 mt-8 pt-8 text-center text-gray-300">
-                <p>&copy; 2024 PlantaMedicinal. Todos los derechos reservados.</p>
+                <p>&copy; 2025 PlantaMedicinal. Todos los derechos reservados.</p>
             </div>
         </div>
     </footer>
@@ -385,3 +396,4 @@
     <script src="js/plantas.js"></script>
 </body>
 </html>
+

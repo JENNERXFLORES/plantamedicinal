@@ -1,4 +1,4 @@
-﻿     1 // ConfiguraciÃ³n de API para PlantaMedicinal
+     1 // ConfiguraciÃ³n de API para PlantaMedicinal
      2 // MigraciÃ³n de almacenamiento local a base de datos MySQL
      3 
      4 // ConfiguraciÃ³n base de la API

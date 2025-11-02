@@ -1,7 +1,7 @@
-﻿// Sistema de gestiÃƒÂ³n de recetas tradicionales para PlantaMedicinal
+// Sistema de gestión de recetas tradicionales para PlantaMedicinal
 // Funcionalidades para visualizar, crear y gestionar recetas
 
-// ConfiguraciÃƒÂ³n del mÃƒÂ³dulo de recetas
+// Configuración del módulo de recetas
 const recetasConfig = {
     itemsPerPage: 12,
     currentPage: 1,
@@ -15,7 +15,7 @@ const recetasConfig = {
     }
 };
 
-// Estado del mÃƒÂ³dulo de recetas
+// Estado del módulo de recetas
 const recetasState = {
     allRecetas: [],
     filteredRecetas: [],
@@ -25,7 +25,7 @@ const recetasState = {
     userRecetas: []
 };
 
-// Placeholder para imágenes faltantes
+// Placeholder para im?genes faltantes
 const RECIPE_PLACEHOLDER = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300"><rect width="100%" height="100%" fill="%23e5e7eb"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%236b7280" font-family="Arial" font-size="24">Receta</text></svg>`;
 const RECIPE_PLACEHOLDER_SAFE = 'data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22><rect width=%22100%25%22 height=%22100%25%22 fill=%22%23e5e7eb%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%236b7280%22 font-family=%22Arial%22 font-size=%2224%22>Receta</text></svg>';
 
@@ -34,17 +34,17 @@ const recetasDatabase = {
     recetas: [
         {
             id: 1,
-            nombre: "InfusiÃƒÂ³n calmante de manzanilla",
+            nombre: "Infusión calmante de manzanilla",
             planta_id: 1,
             planta_nombre: "Manzanilla",
             ingredientes: [
                 "2 cucharadas de flores secas de manzanilla",
                 "250ml de agua caliente",
                 "Miel al gusto (opcional)",
-                "Unas gotas de limÃƒÂ³n (opcional)"
+                "Unas gotas de limón (opcional)"
             ],
-            preparacion: "1. Hervir el agua hasta que alcance el punto de ebulliciÃƒÂ³n\n2. Agregar las flores de manzanilla secas\n3. Dejar reposar tapado durante 5-7 minutos\n4. Colar la infusiÃƒÂ³n para retirar los restos vegetales\n5. Endulzar con miel si se desea\n6. Servir caliente",
-            dosis: "1-2 tazas al dÃƒÂ­a, preferentemente por la noche antes de dormir",
+            preparacion: "1. Hervir el agua hasta que alcance el punto de ebullición\n2. Agregar las flores de manzanilla secas\n3. Dejar reposar tapado durante 5-7 minutos\n4. Colar la infusión para retirar los restos vegetales\n5. Endulzar con miel si se desea\n6. Servir caliente",
+            dosis: "1-2 tazas al día, preferentemente por la noche antes de dormir",
             tiempo_preparacion: "10 minutos",
             advertencias: "No exceder la dosis recomendada. Evitar en caso de alergia a plantas de la familia Asteraceae.",
             autor: "Comunidad Wayuu",
@@ -53,36 +53,36 @@ const recetasDatabase = {
             rating: 4.7,
             comentarios: 23,
             estado: "aprobada",
-            beneficios: ["RelajaciÃƒÂ³n", "DigestiÃƒÂ³n", "Insomnio"],
+            beneficios: ["Relajación", "Digestión", "Insomnio"],
             categoria: "Digestiva",
             imagen: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=400",
-            dificultad: "FÃƒÂ¡cil",
+            dificultad: "Fácil",
             popularidad: 95,
             reportes: 0
         },
         {
             id: 2,
-            nombre: "Gel cicatrizante de sÃƒÂ¡bila",
+            nombre: "Gel cicatrizante de sábila",
             planta_id: 2,
-            planta_nombre: "SÃƒÂ¡bila",
+            planta_nombre: "Sábila",
             ingredientes: [
-                "1 hoja grande y fresca de sÃƒÂ¡bila (aloe vera)",
+                "1 hoja grande y fresca de sábila (aloe vera)",
                 "1 cucharada de miel pura",
                 "3-4 gotas de aceite esencial de lavanda",
                 "1 cucharadita de aceite de vitamina E (opcional)"
             ],
-            preparacion: "1. Lavar bien la hoja de sÃƒÂ¡bila y dejarla escurrir\n2. Cortar la hoja por la mitad longitudinalmente\n3. Extraer cuidadosamente el gel transparente del interior\n4. Batir el gel hasta obtener consistencia homogÃƒÂ©nea\n5. Agregar la miel y mezclar bien\n6. AÃƒÂ±adir las gotas de aceite de lavanda\n7. Si se desea, agregar la vitamina E\n8. Almacenar en recipiente limpio en refrigerador",
-            dosis: "Aplicar sobre la zona afectada 2-3 veces al dÃƒÂ­a hasta cicatrizaciÃƒÂ³n",
+            preparacion: "1. Lavar bien la hoja de sábila y dejarla escurrir\n2. Cortar la hoja por la mitad longitudinalmente\n3. Extraer cuidadosamente el gel transparente del interior\n4. Batir el gel hasta obtener consistencia homogénea\n5. Agregar la miel y mezclar bien\n6. Añadir las gotas de aceite de lavanda\n7. Si se desea, agregar la vitamina E\n8. Almacenar en recipiente limpio en refrigerador",
+            dosis: "Aplicar sobre la zona afectada 2-3 veces al día hasta cicatrización",
             tiempo_preparacion: "15 minutos",
             advertencias: "Solo uso externo. Realizar prueba de alergia antes del primer uso. No aplicar en heridas profundas.",
-            autor: "Dra. MarÃƒÂ­a GonzÃƒÂ¡lez",
+            autor: "Dra. María González",
             autor_tipo: "usuario",
             fecha_creacion: new Date('2024-02-01'),
             rating: 4.9,
             comentarios: 15,
             estado: "aprobada",
             beneficios: ["Cicatrizante", "Hidratante", "Anti-inflamatorio"],
-            categoria: "DermatolÃƒÂ³gica",
+            categoria: "Dermatológica",
             imagen: "https://images.unsplash.com/photo-1596290147884-57e45c2b4c44?w=400",
             dificultad: "Intermedio",
             popularidad: 88,
@@ -90,27 +90,27 @@ const recetasDatabase = {
         },
         {
             id: 3,
-            nombre: "Tintura fortificante de equinÃƒÂ¡cea",
+            nombre: "Tintura fortificante de equinácea",
             planta_id: 3,
-            planta_nombre: "EquinÃƒÂ¡cea",
+            planta_nombre: "Equinácea",
             ingredientes: [
-                "100g de raÃƒÂ­z seca de equinÃƒÂ¡cea",
-                "500ml de alcohol etÃƒÂ­lico al 70%",
+                "100g de raíz seca de equinácea",
+                "500ml de alcohol etílico al 70%",
                 "Frasco de vidrio oscuro",
                 "Colador de tela fina"
             ],
-            preparacion: "1. Triturar la raÃƒÂ­z de equinÃƒÂ¡cea hasta obtener polvo fino\n2. Colocar el polvo en el frasco de vidrio\n3. Cubrir completamente con alcohol\n4. Sellar hermÃƒÂ©ticamente y etiquetar con fecha\n5. Dejar macerar en lugar oscuro durante 2-3 semanas\n6. Agitar suavemente cada 2-3 dÃƒÂ­as\n7. Filtrar con colador de tela fina\n8. Almacenar en frasco oscuro",
-            dosis: "20-30 gotas, 3 veces al dÃƒÂ­a, diluidas en agua",
-            tiempo_preparacion: "30 minutos (mÃƒÂ¡s 2-3 semanas de maceraciÃƒÂ³n)",
-            advertencias: "No usar durante mÃƒÂ¡s de 8 semanas consecutivas. Evitar en enfermedades autoinmunes. Consultar mÃƒÂ©dico antes de usar.",
+            preparacion: "1. Triturar la raíz de equinácea hasta obtener polvo fino\n2. Colocar el polvo en el frasco de vidrio\n3. Cubrir completamente con alcohol\n4. Sellar herméticamente y etiquetar con fecha\n5. Dejar macerar en lugar oscuro durante 2-3 semanas\n6. Agitar suavemente cada 2-3 días\n7. Filtrar con colador de tela fina\n8. Almacenar en frasco oscuro",
+            dosis: "20-30 gotas, 3 veces al día, diluidas en agua",
+            tiempo_preparacion: "30 minutos (más 2-3 semanas de maceración)",
+            advertencias: "No usar durante más de 8 semanas consecutivas. Evitar en enfermedades autoinmunes. Consultar médico antes de usar.",
             autor: "Comunidad Muisca",
             autor_tipo: "proveedor",
             fecha_creacion: new Date('2024-01-20'),
             rating: 4.3,
             comentarios: 8,
             estado: "aprobada",
-            beneficios: ["InmunolÃƒÂ³gico", "Antiviral", "Fortalecimiento"],
-            categoria: "InmunolÃƒÂ³gica",
+            beneficios: ["Inmunológico", "Antiviral", "Fortalecimiento"],
+            categoria: "Inmunológica",
             imagen: "https://images.unsplash.com/photo-1582794543139-8ac9cb0f7b11?w=400",
             dificultad: "Avanzado",
             popularidad: 72,
@@ -127,9 +127,9 @@ const recetasDatabase = {
                 "10ml de aceite de jojoba",
                 "Frasco de vidrio oscuro"
             ],
-            preparacion: "1. Colocar las flores de lavanda en el frasco\n2. Calentar suavemente el aceite de oliva (sin hervir)\n3. Verter el aceite caliente sobre las flores\n4. Agregar el aceite de jojoba\n5. Sellar y dejar reposar en lugar cÃƒÂ¡lido por 2 semanas\n6. Filtrar presionando bien las flores\n7. Almacenar en frasco oscuro etiquetado",
-            dosis: "Aplicar unas gotas en sienes, muÃƒÂ±ecas o difusor segÃƒÂºn necesidad",
-            tiempo_preparacion: "20 minutos (mÃƒÂ¡s 2 semanas de maceraciÃƒÂ³n)",
+            preparacion: "1. Colocar las flores de lavanda en el frasco\n2. Calentar suavemente el aceite de oliva (sin hervir)\n3. Verter el aceite caliente sobre las flores\n4. Agregar el aceite de jojoba\n5. Sellar y dejar reposar en lugar cálido por 2 semanas\n6. Filtrar presionando bien las flores\n7. Almacenar en frasco oscuro etiquetado",
+            dosis: "Aplicar unas gotas en sienes, muñecas o difusor según necesidad",
+            tiempo_preparacion: "20 minutos (más 2 semanas de maceración)",
             advertencias: "Solo uso externo. Evitar contacto con ojos. No usar durante embarazo.",
             autor: "Ana Herbolaria",
             autor_tipo: "usuario",
@@ -137,7 +137,7 @@ const recetasDatabase = {
             rating: 4.6,
             comentarios: 12,
             estado: "aprobada",
-            beneficios: ["RelajaciÃƒÂ³n", "AromÃƒÂ¡tico", "SueÃƒÂ±o"],
+            beneficios: ["Relajación", "Aromático", "Sueño"],
             categoria: "Arom?tica",
             imagen: "https://images.unsplash.com/photo-1611909023032-2d4b3a2e78b1?w=400",
             dificultad: "Intermedio",
@@ -156,11 +156,11 @@ const recetasDatabase = {
                 "Jugo de 2 limones",
                 "1 pizca de canela en polvo"
             ],
-            preparacion: "1. Pelar y cortar el jengibre en rodajas finas\n2. Hervir el agua y agregar el jengibre\n3. Cocinar a fuego lento durante 15 minutos\n4. Colar y dejar enfriar el lÃƒÂ­quido\n5. Agregar la miel y mezclar bien\n6. AÃƒÂ±adir el jugo de limÃƒÂ³n y la canela\n7. Almacenar en frasco esterilizado en refrigerador",
-            dosis: "1-2 cucharadas, 3 veces al dÃƒÂ­a durante sÃƒÂ­ntomas",
+            preparacion: "1. Pelar y cortar el jengibre en rodajas finas\n2. Hervir el agua y agregar el jengibre\n3. Cocinar a fuego lento durante 15 minutos\n4. Colar y dejar enfriar el líquido\n5. Agregar la miel y mezclar bien\n6. Añadir el jugo de limón y la canela\n7. Almacenar en frasco esterilizado en refrigerador",
+            dosis: "1-2 cucharadas, 3 veces al día durante síntomas",
             tiempo_preparacion: "30 minutos",
-            advertencias: "Evitar en caso de ÃƒÂºlceras gÃƒÂ¡stricas. No exceder dosis en niÃƒÂ±os menores de 2 aÃƒÂ±os.",
-            autor: "Curandero JosÃƒÂ©",
+            advertencias: "Evitar en caso de úlceras gástricas. No exceder dosis en niños menores de 2 años.",
+            autor: "Curandero José",
             autor_tipo: "proveedor",
             fecha_creacion: new Date('2024-02-05'),
             rating: 4.4,
@@ -312,7 +312,7 @@ const recetasManager = {
                     return;
                 }
             }
-            // Sin respuesta válida: dejar vacío para evidenciar el error
+            // Sin respuesta v?lida: dejar vac?o para evidenciar el error
             recetasState.allRecetas = [];
         } catch (e) {
             console.warn('Fallo carga de recetas desde API:', e.message);
@@ -329,7 +329,7 @@ const recetasManager = {
 
     // Configurar event listeners
     setupEventListeners: () => {
-        // BÃƒÂºsqueda
+        // Búsqueda
         const searchInput = document.getElementById('recetaSearchInput');
         if (searchInput) {
             searchInput.addEventListener('input', utils.debounce(() => {
@@ -429,7 +429,7 @@ const recetasManager = {
         recetasManager.updateStats();
     },
 
-    // LÃƒÂ³gica de filtrado
+    // Lógica de filtrado
     applyCurrentFilters: () => {
         const filtros = {
             busqueda: recetasConfig.currentFilters.search,
@@ -611,7 +611,7 @@ const recetasManager = {
     // Obtener color de dificultad
     getDificultadColor: (dificultad) => {
         switch (dificultad) {
-            case 'FÃƒÂ¡cil':
+            case 'Fácil':
                 return 'bg-green-100 text-green-800';
             case 'Intermedio':
                 return 'bg-yellow-100 text-yellow-800';
@@ -648,14 +648,14 @@ const recetasManager = {
         statsElement.textContent = `${total} recetas encontradas - ${aprobadas} aprobadas - ${pendientes} pendientes`;
     },
 
-    // Actualizar paginaciÃƒÂ³n
+    // Actualizar paginación
     updatePagination: () => {
         const total = recetasState.filteredRecetas.length;
         recetasConfig.totalPages = Math.ceil(total / recetasConfig.itemsPerPage);
         recetasManager.renderPagination();
     },
 
-    // Renderizar paginaciÃƒÂ³n
+    // Renderizar paginación
     renderPagination: () => {
         const pagination = document.getElementById('recetasPagination');
         if (!pagination || recetasConfig.totalPages <= 1) {
@@ -668,7 +668,7 @@ const recetasManager = {
         
         let html = '<nav class="flex space-x-2">';
 
-        // BotÃƒÂ³n anterior
+        // Botón anterior
         html += `
             <button onclick="recetasManager.goToPage(${currentPage - 1})" 
                     ${currentPage === 1 ? 'disabled' : ''}
@@ -677,7 +677,7 @@ const recetasManager = {
             </button>
         `;
 
-        // NÃƒÂºmeros de pÃƒÂ¡gina (simplificado)
+        // Números de página (simplificado)
         for (let i = 1; i <= Math.min(totalPages, 5); i++) {
             html += `
                 <button onclick="recetasManager.goToPage(${i})" 
@@ -689,7 +689,7 @@ const recetasManager = {
             `;
         }
 
-        // BotÃƒÂ³n siguiente
+        // Botón siguiente
         html += `
             <button onclick="recetasManager.goToPage(${currentPage + 1})" 
                     ${currentPage === totalPages ? 'disabled' : ''}
@@ -702,7 +702,7 @@ const recetasManager = {
         pagination.innerHTML = html;
     },
 
-    // Ir a pÃƒÂ¡gina especÃƒÂ­fica
+    // Ir a página específica
     goToPage: (page) => {
         if (page < 1 || page > recetasConfig.totalPages) return;
         
@@ -852,12 +852,12 @@ const recetasManager = {
                             </ul>
                         </div>
                         
-                        <!-- InformaciÃƒÂ³n adicional -->
+                        <!-- Información adicional -->
                         <div class="space-y-6">
                             <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
                                 <h4 class="font-semibold text-gray-900 mb-2 flex items-center">
                                     <i class="fas fa-info-circle text-blue-500 mr-2"></i>
-                                    InformaciÃƒÂ³n General
+                                    Información General
                                 </h4>
                                 <div class="space-y-2 text-sm text-gray-600">
                                     <div><strong>Dosis:</strong> ${receta.dosis}</div>
@@ -879,11 +879,11 @@ const recetasManager = {
                         </div>
                     </div>
                     
-                    <!-- PreparaciÃƒÂ³n -->
+                    <!-- Preparación -->
                     <div class="mt-8">
                         <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
                             <i class="fas fa-mortar-pestle text-verde-medicina mr-2"></i>
-                            PreparaciÃƒÂ³n
+                            Preparación
                         </h3>
                         <div class="bg-gray-50 rounded-lg p-6">
                             <div class="space-y-3">
@@ -916,12 +916,12 @@ const recetasManager = {
         `;
     },
 
-    // Manejar envÃƒÂ­o de formulario
+    // Manejar envío de formulario
     handleFormSubmit: (e) => {
         e.preventDefault();
         
         if (!authState.isAuthenticated) {
-            utils.showNotification('Debes iniciar sesiÃƒÂ³n para compartir recetas', 'warning');
+            utils.showNotification('Debes iniciar sesión para compartir recetas', 'warning');
             mostrarLogin();
             return;
         }
@@ -948,11 +948,11 @@ const recetasManager = {
         // Agregar receta
         const nuevaReceta = recetasDatabase.addReceta(formData);
         
-        // Cerrar modal y mostrar ÃƒÂ©xito
+        // Cerrar modal y mostrar éxito
         recetasManager.closeFormModal();
-        utils.showNotification('Receta enviada para revisiÃƒÂ³n exitosamente', 'success');
+        utils.showNotification('Receta enviada para revisión exitosamente', 'success');
         
-        // Recargar lista si estÃƒÂ¡ mostrando pendientes
+        // Recargar lista si está mostrando pendientes
         if (recetasConfig.currentFilters.estado === 'pendiente' || recetasConfig.currentFilters.estado === '') {
             recetasManager.loadRecetas();
         }
@@ -978,7 +978,7 @@ const recetasManager = {
 // Funciones globales para la interfaz
 window.mostrarFormularioReceta = () => {
     if (!authState.isAuthenticated) {
-        utils.showNotification('Debes iniciar sesiÃƒÂ³n para compartir recetas', 'warning');
+        utils.showNotification('Debes iniciar sesión para compartir recetas', 'warning');
         mostrarLogin();
         return;
     }
@@ -994,9 +994,9 @@ window.cerrarFormularioReceta = () => {
     recetasManager.closeFormModal();
 };
 
-// InicializaciÃƒÂ³n cuando la pÃƒÂ¡gina estÃƒÂ¡ lista
+// Inicialización cuando la página está lista
 document.addEventListener('DOMContentLoaded', () => {
-    // Verificar si estamos en la pÃƒÂ¡gina de recetas
+    // Verificar si estamos en la página de recetas
     if (window.location.pathname.includes('recetas.html') || document.getElementById('recetasContainer')) {
         recetasManager.init();
         console.log('Pagina de recetas inicializada correctamente');

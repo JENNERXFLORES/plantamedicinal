@@ -1,7 +1,7 @@
-﻿// ConfiguraciÃ³n de API para PlantaMedicinal
-// MigraciÃ³n de almacenamiento local a base de datos MySQL
+// Configuración de API para PlantaMedicinal
+// Migración de almacenamiento local a base de datos MySQL
 
-// ConfiguraciÃ³n base de la API
+// Configuración base de la API
 const apiConfig = {
     // URL base de la API PHP (derivada de la ruta actual para soportar subcarpetas en XAMPP)
     // Ej.: si navegas en /plantamedicinal/index.html => base '/plantamedicinal/php/api'
@@ -13,7 +13,7 @@ const apiConfig = {
     
     // Endpoints de la API
     endpoints: {
-        // AutenticaciÃ³n
+        // Autenticación
         auth: {
             login: '/auth.php?action=login',
             register: '/auth.php?action=register', 
@@ -60,10 +60,10 @@ const apiConfig = {
             notificaciones: '/comunidad.php?endpoint=notificaciones'
         },
 
-        // Estadísticas públicas
+        // Estad�sticas p�blicas
         estadisticas: '/estadisticas.php',
         
-        // AdministraciÃ³n
+        // Administración
         admin: {
             dashboard: '/admin.php/dashboard',
             usuarios: '/admin.php/usuarios',
@@ -75,7 +75,7 @@ const apiConfig = {
         }
     },
     
-    // ConfiguraciÃ³n de peticiones
+    // Configuración de peticiones
     defaultHeaders: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
@@ -109,7 +109,7 @@ class APIClient {
         return headers;
     }
     
-    // MÃ©todo genÃ©rico para hacer peticiones
+    // Método genérico para hacer peticiones
     async makeRequest(endpoint, options = {}) {
         try {
             // Unir base + endpoint garantizando una sola barra (evita //)
@@ -126,13 +126,13 @@ class APIClient {
             // Si hay datos para enviar
             if (options.data) {
                 if (config.method === 'GET') {
-                    // Para GET, aÃ±adir como query params
+                    // Para GET, añadir como query params
                     const params = new URLSearchParams(options.data);
                     const separator = url.includes('?') ? '&' : '?';
                     let finalUrl = `${url}${separator}${params}`;
                     url = finalUrl;
                 } else {
-                    // Para otros mÃ©todos, enviar como JSON en el body
+                    // Para otros métodos, enviar como JSON en el body
                     config.body = JSON.stringify(options.data);
                 }
             }
@@ -142,20 +142,20 @@ class APIClient {
             const timeoutId = setTimeout(() => controller.abort(), this.timeout);
             config.signal = controller.signal;
             
-            // Realizar peticiÃ³n
+            // Realizar petición
             const response = await fetch(url, config);
             clearTimeout(timeoutId);
             
             // Verificar si la respuesta es exitosa
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
-                throw new APIError(`HTTP ${response.status}: ${errorData.message || 'Error en la peticiÃ³n'}`, response.status, errorData);
+                throw new APIError(`HTTP ${response.status}: ${errorData.message || 'Error en la petición'}`, response.status, errorData);
             }
             
             // Parsear respuesta JSON
             const data = await response.json();
             
-            // Verificar si la API reporta Ã©xito
+            // Verificar si la API reporta éxito
             if (data.success === false) {
                 throw new APIError(data.message || 'Error en la API', 400, data);
             }
@@ -164,7 +164,7 @@ class APIClient {
             
         } catch (error) {
             if (error.name === 'AbortError') {
-                throw new APIError('Timeout: La peticiÃ³n tardÃ³ demasiado', 408);
+                throw new APIError('Timeout: La petición tardó demasiado', 408);
             }
             
             if (error instanceof APIError) {
@@ -172,11 +172,11 @@ class APIClient {
             }
             
             // Error de red o parsing
-            throw new APIError(`Error de conexiÃ³n: ${error.message}`, 0);
+            throw new APIError(`Error de conexión: ${error.message}`, 0);
         }
     }
     
-    // MÃ©todos HTTP especÃ­ficos
+    // Métodos HTTP específicos
     async get(endpoint, params = {}, opts = {}) {
         return this.makeRequest(endpoint, {
             method: 'GET',
@@ -233,16 +233,16 @@ class APIError extends Error {
 // Instancia global del cliente API
 const apiClient = new APIClient();
 
-// Funciones de utilidad para migraciÃ³n gradual
+// Funciones de utilidad para migración gradual
 const legacyToAPIAdapter = {
-    // Adaptador para mantener compatibilidad con cÃ³digo existente
+    // Adaptador para mantener compatibilidad con código existente
     async migrateGetRequest(legacyFunction, apiEndpoint, params = {}) {
         try {
             // Intentar con la nueva API
             return await apiClient.get(apiEndpoint, params);
         } catch (error) {
             console.warn('API fallback to legacy:', error.message);
-            // Fallback al mÃ©todo legacy si falla
+            // Fallback al método legacy si falla
             return legacyFunction(params);
         }
     },
@@ -253,7 +253,7 @@ const legacyToAPIAdapter = {
             return await apiClient.post(apiEndpoint, data);
         } catch (error) {
             console.warn('API fallback to legacy:', error.message);
-            // Fallback al mÃ©todo legacy si falla
+            // Fallback al método legacy si falla
             return legacyFunction(data);
         }
     }
@@ -266,24 +266,24 @@ const responseUtils = {
         return response.data || response;
     },
     
-    // Extraer metadata de paginaciÃ³n
+    // Extraer metadata de paginación
     extractMeta(response) {
         return response.meta || {};
     },
     
-    // Verificar si hay mÃ¡s pÃ¡ginas
+    // Verificar si hay más páginas
     hasNextPage(meta) {
         return meta.has_next_page || false;
     },
     
-    // Obtener nÃºmero total de pÃ¡ginas
+    // Obtener número total de páginas
     getTotalPages(meta) {
         return meta.total_pages || 1;
     },
     
-    // Mostrar mensaje de Ã©xito
+    // Mostrar mensaje de éxito
     showSuccess(message) {
-        // Implementar segÃºn el sistema de notificaciones del frontend
+        // Implementar según el sistema de notificaciones del frontend
         if (window.showNotification) {
             window.showNotification(message, 'success');
         } else {
@@ -303,7 +303,7 @@ const responseUtils = {
             message = error.message;
         }
         
-        // Implementar segÃºn el sistema de notificaciones del frontend
+        // Implementar según el sistema de notificaciones del frontend
         if (window.showNotification) {
             window.showNotification(message, 'error');
         } else {
@@ -313,7 +313,7 @@ const responseUtils = {
     }
 };
 
-// Interceptor para manejo automÃ¡tico de errores de autenticaciÃ³n
+// Interceptor para manejo automático de errores de autenticación
 const setupAuthInterceptor = () => {
     // Extender el cliente API para manejar errores 401
     const originalMakeRequest = apiClient.makeRequest.bind(apiClient);
@@ -323,7 +323,7 @@ const setupAuthInterceptor = () => {
             return await originalMakeRequest(endpoint, options);
         } catch (error) {
             if (error.status === 401) {
-                // Token expirado o invÃ¡lido
+                // Token expirado o inválido
                 this.setToken(null);
                 if (window.authManager && typeof window.authManager.handleAuthError === 'function') {
                     window.authManager.handleAuthError();
@@ -342,7 +342,7 @@ const setupAuthInterceptor = () => {
 // Inicializar interceptor
 setupAuthInterceptor();
 
-// Log de configuraciÃ³n
+// Log de configuración
 console.log('API Configuration loaded');
 console.log('Base URL:', apiConfig.baseURL);
 console.log('Token available:', !!apiClient.token);
